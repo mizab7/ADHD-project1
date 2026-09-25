@@ -1,0 +1,240 @@
+subject_id,site,label,feature_path,timepoints,num_rois,age,gender,y_true,y_pred,adhd_prob,error_type
+sub-1018959,KKI,0,./data/cached_features/KKI_sub-1018959_aal116.npy,152,116,12.36,,0,1,0.8719265372874295,False Positive (Control -> ADHD Error)
+sub-1019436,KKI,1,./data/cached_features/KKI_sub-1019436_aal116.npy,152,116,12.98,,1,1,0.7057455585991388,Correct
+sub-1043241,KKI,0,./data/cached_features/KKI_sub-1043241_aal116.npy,152,116,9.12,,0,0,0.39167403625528907,Correct
+sub-1266183,KKI,0,./data/cached_features/KKI_sub-1266183_aal116.npy,124,116,9.67,,0,0,0.44320596742733953,Correct
+sub-1535233,KKI,0,./data/cached_features/KKI_sub-1535233_aal116.npy,152,116,9.64,,0,1,0.6568755554708066,False Positive (Control -> ADHD Error)
+sub-1541812,KKI,1,./data/cached_features/KKI_sub-1541812_aal116.npy,124,116,8.45,,1,0,0.6520187340829156,False Negative (ADHD -> Control Error)
+sub-1577042,KKI,1,./data/cached_features/KKI_sub-1577042_aal116.npy,124,116,9.06,,1,0,0.5027998224136718,False Negative (ADHD -> Control Error)
+sub-1594156,KKI,0,./data/cached_features/KKI_sub-1594156_aal116.npy,124,116,12.87,,0,0,0.28891112852103257,Correct
+sub-1623716,KKI,1,./data/cached_features/KKI_sub-1623716_aal116.npy,124,116,12.65,,1,1,0.613812853270475,Correct
+sub-1638334,KKI,0,./data/cached_features/KKI_sub-1638334_aal116.npy,124,116,10.44,,0,0,0.5135317154460343,Correct
+sub-1652369,KKI,0,./data/cached_features/KKI_sub-1652369_aal116.npy,124,116,10.6,,0,1,0.6431208230184553,False Positive (Control -> ADHD Error)
+sub-1686265,KKI,0,./data/cached_features/KKI_sub-1686265_aal116.npy,124,116,8.02,,0,0,0.13629600091603367,Correct
+sub-1692275,KKI,0,./data/cached_features/KKI_sub-1692275_aal116.npy,124,116,10.78,,0,1,0.8319194603915074,False Positive (Control -> ADHD Error)
+sub-1735881,KKI,0,./data/cached_features/KKI_sub-1735881_aal116.npy,124,116,9.39,,0,0,0.697619565460389,Correct
+sub-1779922,KKI,0,./data/cached_features/KKI_sub-1779922_aal116.npy,152,116,10.84,,0,0,0.28345174196175565,Correct
+sub-1842819,KKI,0,./data/cached_features/KKI_sub-1842819_aal116.npy,124,116,10.09,,0,0,0.3659779416636843,Correct
+sub-1846346,KKI,0,./data/cached_features/KKI_sub-1846346_aal116.npy,152,116,8.91,,0,1,0.6942406969147249,False Positive (Control -> ADHD Error)
+sub-1873761,KKI,1,./data/cached_features/KKI_sub-1873761_aal116.npy,124,116,10.36,,1,0,0.4807551325753838,False Negative (ADHD -> Control Error)
+sub-1962503,KKI,0,./data/cached_features/KKI_sub-1962503_aal116.npy,124,116,8.67,,0,1,0.6303268749436262,False Positive (Control -> ADHD Error)
+sub-1988015,KKI,0,./data/cached_features/KKI_sub-1988015_aal116.npy,152,116,11.17,,0,1,0.8670718857510886,False Positive (Control -> ADHD Error)
+sub-1996183,KKI,1,./data/cached_features/KKI_sub-1996183_aal116.npy,152,116,11.04,,1,1,0.3601488200616747,Correct
+sub-2014113,KKI,1,./data/cached_features/KKI_sub-2014113_aal116.npy,124,116,10.35,,1,1,0.5109792692967509,Correct
+sub-2018106,KKI,0,./data/cached_features/KKI_sub-2018106_aal116.npy,152,116,11.66,,0,0,0.34436034100920515,Correct
+sub-2026113,KKI,1,./data/cached_features/KKI_sub-2026113_aal116.npy,124,116,12.99,,1,1,0.48899134863966165,Correct
+sub-2081148,KKI,1,./data/cached_features/KKI_sub-2081148_aal116.npy,124,116,9.43,,1,1,0.6106088071293784,Correct
+sub-2104012,KKI,0,./data/cached_features/KKI_sub-2104012_aal116.npy,124,116,9.62,,0,1,0.6730137841871406,False Positive (Control -> ADHD Error)
+sub-2138826,KKI,0,./data/cached_features/KKI_sub-2138826_aal116.npy,124,116,8.46,,0,1,0.42348955511421293,False Positive (Control -> ADHD Error)
+sub-2299519,KKI,1,./data/cached_features/KKI_sub-2299519_aal116.npy,124,116,11.89,,1,1,0.7807561697154624,Correct
+sub-2344857,KKI,0,./data/cached_features/KKI_sub-2344857_aal116.npy,152,116,8.92,,0,1,0.6602891681201185,False Positive (Control -> ADHD Error)
+sub-2360428,KKI,0,./data/cached_features/KKI_sub-2360428_aal116.npy,124,116,8.56,,0,0,0.30839162999080555,Correct
+sub-2371032,KKI,0,./data/cached_features/KKI_sub-2371032_aal116.npy,152,116,10.73,,0,1,0.8467193249123588,False Positive (Control -> ADHD Error)
+sub-2554127,KKI,0,./data/cached_features/KKI_sub-2554127_aal116.npy,124,116,9.02,,0,0,0.31478624102049607,Correct
+sub-2558999,KKI,0,./data/cached_features/KKI_sub-2558999_aal116.npy,152,116,8.87,,0,1,0.40759836253214454,False Positive (Control -> ADHD Error)
+sub-2572285,KKI,0,./data/cached_features/KKI_sub-2572285_aal116.npy,152,116,8.33,,0,0,0.11919859255092718,Correct
+sub-2601925,KKI,0,./data/cached_features/KKI_sub-2601925_aal116.npy,124,116,9.58,,0,1,0.7422120236496713,False Positive (Control -> ADHD Error)
+sub-2618929,KKI,0,./data/cached_features/KKI_sub-2618929_aal116.npy,124,116,10.09,,0,0,0.3906585519767986,Correct
+sub-2621228,KKI,0,./data/cached_features/KKI_sub-2621228_aal116.npy,124,116,8.98,,0,1,0.5215336813358572,False Positive (Control -> ADHD Error)
+sub-2640795,KKI,0,./data/cached_features/KKI_sub-2640795_aal116.npy,124,116,12.47,,0,0,0.792720705366957,Correct
+sub-2641332,KKI,0,./data/cached_features/KKI_sub-2641332_aal116.npy,152,116,10.38,,0,1,0.2643473306987047,False Positive (Control -> ADHD Error)
+sub-2703289,KKI,0,./data/cached_features/KKI_sub-2703289_aal116.npy,124,116,11.1,,0,1,0.7831440939576775,False Positive (Control -> ADHD Error)
+sub-2740232,KKI,0,./data/cached_features/KKI_sub-2740232_aal116.npy,124,116,11.09,,0,1,0.8514859519859539,False Positive (Control -> ADHD Error)
+sub-2768273,KKI,0,./data/cached_features/KKI_sub-2768273_aal116.npy,124,116,9.24,,0,0,0.43022937311177856,Correct
+sub-2822304,KKI,0,./data/cached_features/KKI_sub-2822304_aal116.npy,124,116,9.62,,0,0,0.5104509121044374,Correct
+sub-2903997,KKI,0,./data/cached_features/KKI_sub-2903997_aal116.npy,152,116,11.91,,0,1,0.3213646620701237,False Positive (Control -> ADHD Error)
+sub-2917777,KKI,0,./data/cached_features/KKI_sub-2917777_aal116.npy,152,116,12.66,,0,0,0.21813267037450343,Correct
+sub-2930625,KKI,0,./data/cached_features/KKI_sub-2930625_aal116.npy,124,116,9.97,,0,0,0.48336741528308186,Correct
+sub-3103809,KKI,0,./data/cached_features/KKI_sub-3103809_aal116.npy,152,116,9.3,,0,1,0.8456220951535067,False Positive (Control -> ADHD Error)
+sub-3119327,KKI,1,./data/cached_features/KKI_sub-3119327_aal116.npy,152,116,10.15,,1,1,0.7015360720318078,Correct
+sub-3154996,KKI,1,./data/cached_features/KKI_sub-3154996_aal116.npy,124,116,11.65,,1,1,0.4909222273769078,Correct
+sub-3160561,KKI,1,./data/cached_features/KKI_sub-3160561_aal116.npy,152,116,11.95,,1,0,0.30998603698691096,False Negative (ADHD -> Control Error)
+sub-3170319,KKI,1,./data/cached_features/KKI_sub-3170319_aal116.npy,124,116,9.52,,1,1,0.895413710550996,Correct
+sub-3310328,KKI,1,./data/cached_features/KKI_sub-3310328_aal116.npy,124,116,9.97,,1,0,0.6703664255455166,False Negative (ADHD -> Control Error)
+sub-3434578,KKI,0,./data/cached_features/KKI_sub-3434578_aal116.npy,152,116,8.12,,0,1,0.42381659148076817,False Positive (Control -> ADHD Error)
+sub-3486975,KKI,0,./data/cached_features/KKI_sub-3486975_aal116.npy,124,116,11.73,,0,0,0.14999220235376773,Correct
+sub-3519022,KKI,1,./data/cached_features/KKI_sub-3519022_aal116.npy,124,116,8.1,,1,0,0.16579189601247304,False Negative (ADHD -> Control Error)
+sub-3611827,KKI,1,./data/cached_features/KKI_sub-3611827_aal116.npy,124,116,9.08,,1,0,0.20029737497210923,False Negative (ADHD -> Control Error)
+sub-3699991,KKI,0,./data/cached_features/KKI_sub-3699991_aal116.npy,152,116,12.77,,0,1,0.5041435842771451,False Positive (Control -> ADHD Error)
+sub-3713230,KKI,0,./data/cached_features/KKI_sub-3713230_aal116.npy,124,116,11.67,,0,1,0.5645621100652396,False Positive (Control -> ADHD Error)
+sub-3813783,KKI,0,./data/cached_features/KKI_sub-3813783_aal116.npy,124,116,10.55,,0,0,0.5407791954930156,Correct
+sub-3884955,KKI,0,./data/cached_features/KKI_sub-3884955_aal116.npy,124,116,11.84,,0,1,0.7045392556693021,False Positive (Control -> ADHD Error)
+sub-3902469,KKI,0,./data/cached_features/KKI_sub-3902469_aal116.npy,152,116,10.64,,0,1,0.3965405894178222,False Positive (Control -> ADHD Error)
+sub-3912996,KKI,0,./data/cached_features/KKI_sub-3912996_aal116.npy,124,116,9.79,,0,1,0.30041502343670845,False Positive (Control -> ADHD Error)
+sub-3917422,KKI,1,./data/cached_features/KKI_sub-3917422_aal116.npy,124,116,8.19,,1,0,0.47298508897565616,False Negative (ADHD -> Control Error)
+sub-3972472,KKI,0,./data/cached_features/KKI_sub-3972472_aal116.npy,124,116,9.12,,0,1,0.7636283018356704,False Positive (Control -> ADHD Error)
+sub-3972956,KKI,0,./data/cached_features/KKI_sub-3972956_aal116.npy,124,116,10.12,,0,0,0.4368453685160317,Correct
+sub-4104523,KKI,0,./data/cached_features/KKI_sub-4104523_aal116.npy,152,116,12.43,,0,0,0.7116059401862476,Correct
+sub-4154182,KKI,0,./data/cached_features/KKI_sub-4154182_aal116.npy,152,116,9.75,,0,0,0.7591801548593554,Correct
+sub-4275075,KKI,1,./data/cached_features/KKI_sub-4275075_aal116.npy,124,116,10.5,,1,1,0.7631196173086856,Correct
+sub-4362730,KKI,1,./data/cached_features/KKI_sub-4362730_aal116.npy,124,116,8.99,,1,0,0.20126374364348765,False Negative (ADHD -> Control Error)
+sub-4601682,KKI,0,./data/cached_features/KKI_sub-4601682_aal116.npy,124,116,11.02,,0,0,0.41879541012620525,Correct
+sub-5216908,KKI,0,./data/cached_features/KKI_sub-5216908_aal116.npy,152,116,10.82,,0,0,0.3171170900567766,Correct
+sub-6346605,KKI,0,./data/cached_features/KKI_sub-6346605_aal116.npy,124,116,10.69,,0,0,0.14703981784929818,Correct
+sub-6453038,KKI,1,./data/cached_features/KKI_sub-6453038_aal116.npy,124,116,8.72,,1,1,0.38894456074498224,Correct
+sub-7129258,KKI,0,./data/cached_features/KKI_sub-7129258_aal116.npy,124,116,9.73,,0,1,0.8857455598183387,False Positive (Control -> ADHD Error)
+sub-7415617,KKI,0,./data/cached_features/KKI_sub-7415617_aal116.npy,124,116,10.9,,0,0,0.6031213618910576,Correct
+sub-7774305,KKI,0,./data/cached_features/KKI_sub-7774305_aal116.npy,152,116,11.22,,0,1,0.7748485832648059,False Positive (Control -> ADHD Error)
+sub-8083695,KKI,0,./data/cached_features/KKI_sub-8083695_aal116.npy,124,116,8.62,,0,1,0.1248022650654618,False Positive (Control -> ADHD Error)
+sub-8263351,KKI,0,./data/cached_features/KKI_sub-8263351_aal116.npy,124,116,8.34,,0,1,0.7923871799308526,False Positive (Control -> ADHD Error)
+sub-8337695,KKI,1,./data/cached_features/KKI_sub-8337695_aal116.npy,152,116,8.8,,1,0,0.10135024440471777,False Negative (ADHD -> Control Error)
+sub-8432725,KKI,0,./data/cached_features/KKI_sub-8432725_aal116.npy,124,116,11.51,,0,1,0.8935186778406868,False Positive (Control -> ADHD Error)
+sub-8628223,KKI,0,./data/cached_features/KKI_sub-8628223_aal116.npy,152,116,10.81,,0,0,0.24115253478174542,Correct
+sub-8658218,KKI,0,./data/cached_features/KKI_sub-8658218_aal116.npy,124,116,9.75,,0,0,0.21106350885449895,Correct
+sub-9922944,KKI,0,./data/cached_features/KKI_sub-9922944_aal116.npy,152,116,10.3,,0,0,0.10461152525032054,Correct
+sub-0010011,NYU,1,./data/cached_features/NYU_sub-0010011_aal116.npy,176,116,9.16,,1,1,0.5036585271932429,Correct
+sub-0010060,NYU,1,./data/cached_features/NYU_sub-0010060_aal116.npy,176,116,8.75,,1,0,0.4968261088387525,False Negative (ADHD -> Control Error)
+sub-0010061,NYU,1,./data/cached_features/NYU_sub-0010061_aal116.npy,176,116,11.41,,1,1,0.5651284393638327,Correct
+sub-0010108,NYU,1,./data/cached_features/NYU_sub-0010108_aal116.npy,176,116,17.15,,1,0,0.23434138684403605,False Negative (ADHD -> Control Error)
+sub-0010119,NYU,1,./data/cached_features/NYU_sub-0010119_aal116.npy,176,116,7.77,,1,1,0.6787921590915523,Correct
+sub-0010125,NYU,0,./data/cached_features/NYU_sub-0010125_aal116.npy,176,116,7.19,,0,1,0.7196628706316655,False Positive (Control -> ADHD Error)
+sub-1567356,NYU,0,./data/cached_features/NYU_sub-1567356_aal116.npy,176,116,8.91,,0,1,0.4531808278236904,False Positive (Control -> ADHD Error)
+sub-1884448,NYU,0,./data/cached_features/NYU_sub-1884448_aal116.npy,176,116,8.91,,0,1,0.631700353040602,False Positive (Control -> ADHD Error)
+sub-8915162,NYU,1,./data/cached_features/NYU_sub-8915162_aal116.npy,176,116,10.7,,1,1,0.17205486711111312,Correct
+sub-2876903,NeuroIMAGE,1,./data/cached_features/NeuroIMAGE_sub-2876903_aal116.npy,261,116,11.05,,1,1,0.30299911328527557,Correct
+sub-0023000,OHSU,1,./data/cached_features/OHSU_sub-0023000_aal116.npy,77,116,10.42,,1,0,0.37492209299196627,False Negative (ADHD -> Control Error)
+sub-0023001,OHSU,0,./data/cached_features/OHSU_sub-0023001_aal116.npy,77,116,9.33,,0,1,0.4202141280242591,False Positive (Control -> ADHD Error)
+sub-0023002,OHSU,1,./data/cached_features/OHSU_sub-0023002_aal116.npy,77,116,10.67,,1,1,0.2553363434646749,Correct
+sub-0023006,OHSU,0,./data/cached_features/OHSU_sub-0023006_aal116.npy,77,116,9.25,,0,1,0.7574564691660645,False Positive (Control -> ADHD Error)
+sub-0023007,OHSU,1,./data/cached_features/OHSU_sub-0023007_aal116.npy,77,116,11.08,,1,0,0.16413010850599347,False Negative (ADHD -> Control Error)
+sub-0023008,OHSU,0,./data/cached_features/OHSU_sub-0023008_aal116.npy,77,116,9.17,,0,1,0.8622794130213968,False Positive (Control -> ADHD Error)
+sub-0023010,OHSU,0,./data/cached_features/OHSU_sub-0023010_aal116.npy,77,116,7.67,,0,1,0.7528462697717437,False Positive (Control -> ADHD Error)
+sub-0023011,OHSU,0,./data/cached_features/OHSU_sub-0023011_aal116.npy,77,116,8.92,,0,1,0.4279364705019959,False Positive (Control -> ADHD Error)
+sub-0023013,OHSU,0,./data/cached_features/OHSU_sub-0023013_aal116.npy,77,116,10.58,,0,0,0.5004287942546072,Correct
+sub-0023016,OHSU,0,./data/cached_features/OHSU_sub-0023016_aal116.npy,77,116,10.25,,0,0,0.4116300291182944,Correct
+sub-0023024,OHSU,0,./data/cached_features/OHSU_sub-0023024_aal116.npy,77,116,9.58,,0,1,0.7479462218673643,False Positive (Control -> ADHD Error)
+sub-0023026,OHSU,0,./data/cached_features/OHSU_sub-0023026_aal116.npy,77,116,8.33,,0,0,0.6154531365694897,Correct
+sub-0023027,OHSU,0,./data/cached_features/OHSU_sub-0023027_aal116.npy,77,116,11.58,,0,1,0.8215898750924202,False Positive (Control -> ADHD Error)
+sub-0023028,OHSU,0,./data/cached_features/OHSU_sub-0023028_aal116.npy,77,116,9.92,,0,1,0.44332118234792584,False Positive (Control -> ADHD Error)
+sub-0023031,OHSU,0,./data/cached_features/OHSU_sub-0023031_aal116.npy,77,116,11.92,,0,0,0.14005552479226574,Correct
+sub-0023038,OHSU,0,./data/cached_features/OHSU_sub-0023038_aal116.npy,77,116,9.33,,0,1,0.3802522292993959,False Positive (Control -> ADHD Error)
+sub-0023039,OHSU,0,./data/cached_features/OHSU_sub-0023039_aal116.npy,77,116,11.17,,0,0,0.13164397492640784,Correct
+sub-0023040,OHSU,0,./data/cached_features/OHSU_sub-0023040_aal116.npy,77,116,7.5,,0,1,0.4849046449470105,False Positive (Control -> ADHD Error)
+sub-0023041,OHSU,0,./data/cached_features/OHSU_sub-0023041_aal116.npy,77,116,9.92,,0,1,0.8473805060783851,False Positive (Control -> ADHD Error)
+sub-0023042,OHSU,0,./data/cached_features/OHSU_sub-0023042_aal116.npy,77,116,8.08,,0,0,0.4196163881442547,Correct
+sub-1084283,OHSU,1,./data/cached_features/OHSU_sub-1084283_aal116.npy,78,116,11.0,,1,0,0.6606508673315619,False Negative (ADHD -> Control Error)
+sub-1084884,OHSU,0,./data/cached_features/OHSU_sub-1084884_aal116.npy,78,116,9.42,,0,1,0.42185573754932415,False Positive (Control -> ADHD Error)
+sub-1108916,OHSU,1,./data/cached_features/OHSU_sub-1108916_aal116.npy,78,116,8.5,,1,0,0.3842705389382749,False Negative (ADHD -> Control Error)
+sub-1340333,OHSU,1,./data/cached_features/OHSU_sub-1340333_aal116.npy,78,116,7.42,,1,0,0.4391167192954202,False Negative (ADHD -> Control Error)
+sub-1386056,OHSU,0,./data/cached_features/OHSU_sub-1386056_aal116.npy,78,116,8.0,,0,1,0.49778780688867263,False Positive (Control -> ADHD Error)
+sub-1411223,OHSU,1,./data/cached_features/OHSU_sub-1411223_aal116.npy,78,116,9.17,,1,0,0.5584190835449241,False Negative (ADHD -> Control Error)
+sub-1418396,OHSU,0,./data/cached_features/OHSU_sub-1418396_aal116.npy,78,116,8.67,,0,0,0.2901235513497789,Correct
+sub-1421489,OHSU,0,./data/cached_features/OHSU_sub-1421489_aal116.npy,78,116,8.75,,0,1,0.4023614059935632,False Positive (Control -> ADHD Error)
+sub-1481430,OHSU,0,./data/cached_features/OHSU_sub-1481430_aal116.npy,78,116,11.92,,0,1,0.5242022551027202,False Positive (Control -> ADHD Error)
+sub-1536593,OHSU,1,./data/cached_features/OHSU_sub-1536593_aal116.npy,78,116,8.58,,1,0,0.31699076495007916,False Negative (ADHD -> Control Error)
+sub-1647968,OHSU,0,./data/cached_features/OHSU_sub-1647968_aal116.npy,78,116,11.0,,0,1,0.5004999497898267,False Positive (Control -> ADHD Error)
+sub-1664335,OHSU,0,./data/cached_features/OHSU_sub-1664335_aal116.npy,78,116,9.0,,0,1,0.59384067967816,False Positive (Control -> ADHD Error)
+sub-1679142,OHSU,0,./data/cached_features/OHSU_sub-1679142_aal116.npy,78,116,10.33,,0,0,0.2592432393123346,Correct
+sub-1696588,OHSU,0,./data/cached_features/OHSU_sub-1696588_aal116.npy,78,116,8.75,,0,1,0.6956018318628375,False Positive (Control -> ADHD Error)
+sub-1743472,OHSU,1,./data/cached_features/OHSU_sub-1743472_aal116.npy,78,116,8.75,,1,0,0.15610743531483787,False Negative (ADHD -> Control Error)
+sub-2054310,OHSU,1,./data/cached_features/OHSU_sub-2054310_aal116.npy,78,116,8.42,,1,1,0.24665174495664763,Correct
+sub-2232376,OHSU,0,./data/cached_features/OHSU_sub-2232376_aal116.npy,78,116,10.33,,0,1,0.7055655102342221,False Positive (Control -> ADHD Error)
+sub-2409220,OHSU,0,./data/cached_features/OHSU_sub-2409220_aal116.npy,78,116,7.67,,0,1,0.6782506522598637,False Positive (Control -> ADHD Error)
+sub-2427434,OHSU,0,./data/cached_features/OHSU_sub-2427434_aal116.npy,78,116,8.08,,0,0,0.1052753132077715,Correct
+sub-2455205,OHSU,1,./data/cached_features/OHSU_sub-2455205_aal116.npy,78,116,7.5,,1,1,0.597319164651635,Correct
+sub-2559559,OHSU,1,./data/cached_features/OHSU_sub-2559559_aal116.npy,78,116,7.92,,1,1,0.34482471225031974,Correct
+sub-2561174,OHSU,1,./data/cached_features/OHSU_sub-2561174_aal116.npy,78,116,8.67,,1,1,0.24910263016140385,Correct
+sub-2571197,OHSU,1,./data/cached_features/OHSU_sub-2571197_aal116.npy,78,116,7.67,,1,0,0.10003166603558178,False Negative (ADHD -> Control Error)
+sub-2578455,OHSU,0,./data/cached_features/OHSU_sub-2578455_aal116.npy,78,116,9.5,,0,0,0.16322168207700694,Correct
+sub-2929195,OHSU,1,./data/cached_features/OHSU_sub-2929195_aal116.npy,78,116,9.58,,1,0,0.6229866949272405,False Negative (ADHD -> Control Error)
+sub-2947936,OHSU,0,./data/cached_features/OHSU_sub-2947936_aal116.npy,78,116,8.5,,0,1,0.33937098465162274,False Positive (Control -> ADHD Error)
+sub-3048401,OHSU,0,./data/cached_features/OHSU_sub-3048401_aal116.npy,78,116,11.58,,0,1,0.8528845062830506,False Positive (Control -> ADHD Error)
+sub-3052540,OHSU,1,./data/cached_features/OHSU_sub-3052540_aal116.npy,78,116,9.17,,1,0,0.3941547093984887,False Negative (ADHD -> Control Error)
+sub-3162671,OHSU,0,./data/cached_features/OHSU_sub-3162671_aal116.npy,78,116,8.5,,0,1,0.46421562499896674,False Positive (Control -> ADHD Error)
+sub-3206978,OHSU,0,./data/cached_features/OHSU_sub-3206978_aal116.npy,78,116,8.25,,0,1,0.6196289587873587,False Positive (Control -> ADHD Error)
+sub-3212875,OHSU,0,./data/cached_features/OHSU_sub-3212875_aal116.npy,78,116,8.67,,0,0,0.20981744237385538,Correct
+sub-3244985,OHSU,0,./data/cached_features/OHSU_sub-3244985_aal116.npy,78,116,7.17,,0,1,0.6563596431872857,False Positive (Control -> ADHD Error)
+sub-3302025,OHSU,0,./data/cached_features/OHSU_sub-3302025_aal116.npy,78,116,9.0,,0,1,0.6016488172847112,False Positive (Control -> ADHD Error)
+sub-3358877,OHSU,1,./data/cached_features/OHSU_sub-3358877_aal116.npy,78,116,8.5,,1,1,0.897856087516261,Correct
+sub-3466651,OHSU,1,./data/cached_features/OHSU_sub-3466651_aal116.npy,78,116,8.08,,1,1,0.8314322547790872,Correct
+sub-3560456,OHSU,1,./data/cached_features/OHSU_sub-3560456_aal116.npy,78,116,7.83,,1,0,0.22280291648380166,False Negative (ADHD -> Control Error)
+sub-3677724,OHSU,1,./data/cached_features/OHSU_sub-3677724_aal116.npy,78,116,8.75,,1,1,0.8350322344875304,Correct
+sub-3812101,OHSU,0,./data/cached_features/OHSU_sub-3812101_aal116.npy,78,116,7.83,,0,0,0.611921304624808,Correct
+sub-3848511,OHSU,0,./data/cached_features/OHSU_sub-3848511_aal116.npy,78,116,8.08,,0,1,0.5671256617417245,False Positive (Control -> ADHD Error)
+sub-3869075,OHSU,0,./data/cached_features/OHSU_sub-3869075_aal116.npy,78,116,8.67,,0,0,0.5368272338617567,Correct
+sub-3899622,OHSU,0,./data/cached_features/OHSU_sub-3899622_aal116.npy,78,116,8.25,,0,0,0.22132123666819112,Correct
+sub-4072305,OHSU,1,./data/cached_features/OHSU_sub-4072305_aal116.npy,78,116,9.25,,1,1,0.6707094935581406,Correct
+sub-4103874,OHSU,0,./data/cached_features/OHSU_sub-4103874_aal116.npy,78,116,7.33,,0,1,0.6618178039584832,False Positive (Control -> ADHD Error)
+sub-4529116,OHSU,0,./data/cached_features/OHSU_sub-4529116_aal116.npy,78,116,8.42,,0,1,0.42283004991004725,False Positive (Control -> ADHD Error)
+sub-5302451,OHSU,1,./data/cached_features/OHSU_sub-5302451_aal116.npy,78,116,11.33,,1,0,0.20823120950680477,False Negative (ADHD -> Control Error)
+sub-6953386,OHSU,1,./data/cached_features/OHSU_sub-6953386_aal116.npy,78,116,11.83,,1,0,0.3875906161614362,False Negative (ADHD -> Control Error)
+sub-7333005,OHSU,1,./data/cached_features/OHSU_sub-7333005_aal116.npy,78,116,9.0,,1,0,0.20305842785917003,False Negative (ADHD -> Control Error)
+sub-8218392,OHSU,0,./data/cached_features/OHSU_sub-8218392_aal116.npy,78,116,8.33,,0,1,0.5385642508879578,False Positive (Control -> ADHD Error)
+sub-8720244,OHSU,1,./data/cached_features/OHSU_sub-8720244_aal116.npy,78,116,10.33,,1,1,0.882206214179837,Correct
+sub-9499804,OHSU,0,./data/cached_features/OHSU_sub-9499804_aal116.npy,78,116,8.17,,0,0,0.5821631723177776,Correct
+sub-1038415,Peking_1,1,./data/cached_features/Peking_1_sub-1038415_aal116.npy,235,116,14.92,,1,0,0.3748003379103801,False Negative (ADHD -> Control Error)
+sub-1056121,Peking_1,0,./data/cached_features/Peking_1_sub-1056121_aal116.npy,236,116,13.92,,0,1,0.3332778408380473,False Positive (Control -> ADHD Error)
+sub-1133221,Peking_1,1,./data/cached_features/Peking_1_sub-1133221_aal116.npy,236,116,12.33,,1,1,0.8816571657454767,Correct
+sub-1186237,Peking_1,1,./data/cached_features/Peking_1_sub-1186237_aal116.npy,236,116,13.92,,1,1,0.16831912545203817,Correct
+sub-1245758,Peking_1,0,./data/cached_features/Peking_1_sub-1245758_aal116.npy,235,116,8.58,,0,1,0.7658366772972087,False Positive (Control -> ADHD Error)
+sub-1282248,Peking_1,1,./data/cached_features/Peking_1_sub-1282248_aal116.npy,236,116,10.58,,1,0,0.41882554771827674,False Negative (ADHD -> Control Error)
+sub-1302449,Peking_1,0,./data/cached_features/Peking_1_sub-1302449_aal116.npy,236,116,8.58,,0,1,0.5328263580309353,False Positive (Control -> ADHD Error)
+sub-1419103,Peking_1,0,./data/cached_features/Peking_1_sub-1419103_aal116.npy,235,116,9.92,,0,0,0.1581667011330663,Correct
+sub-1469171,Peking_1,0,./data/cached_features/Peking_1_sub-1469171_aal116.npy,236,116,11.58,,0,1,0.28331561456120496,False Positive (Control -> ADHD Error)
+sub-1689948,Peking_1,0,./data/cached_features/Peking_1_sub-1689948_aal116.npy,236,116,11.75,,0,0,0.13156710391282803,Correct
+sub-1784368,Peking_1,1,./data/cached_features/Peking_1_sub-1784368_aal116.npy,235,116,8.92,,1,1,0.538982521765963,Correct
+sub-1791543,Peking_1,1,./data/cached_features/Peking_1_sub-1791543_aal116.npy,236,116,9.33,,1,0,0.12129227342808867,False Negative (ADHD -> Control Error)
+sub-2024999,Peking_1,1,./data/cached_features/Peking_1_sub-2024999_aal116.npy,235,116,10.33,,1,1,0.19897307944572004,Correct
+sub-2101067,Peking_1,0,./data/cached_features/Peking_1_sub-2101067_aal116.npy,235,116,15.17,,0,1,0.6556960890109573,False Positive (Control -> ADHD Error)
+sub-2342030,Peking_1,0,./data/cached_features/Peking_1_sub-2342030_aal116.npy,235,116,10.17,,0,0,0.29043933759755075,Correct
+sub-2380326,Peking_1,1,./data/cached_features/Peking_1_sub-2380326_aal116.npy,235,116,9.58,,1,0,0.5031542958235685,False Negative (ADHD -> Control Error)
+sub-2488729,Peking_1,0,./data/cached_features/Peking_1_sub-2488729_aal116.npy,235,116,13.75,,0,0,0.5460841929021633,Correct
+sub-2505328,Peking_1,1,./data/cached_features/Peking_1_sub-2505328_aal116.npy,235,116,8.83,,1,0,0.43540929579715604,False Negative (ADHD -> Control Error)
+sub-2628237,Peking_1,1,./data/cached_features/Peking_1_sub-2628237_aal116.npy,235,116,13.0,,1,0,0.12645227002619672,False Negative (ADHD -> Control Error)
+sub-2703336,Peking_1,0,./data/cached_features/Peking_1_sub-2703336_aal116.npy,236,116,11.5,,0,0,0.5335895051611084,Correct
+sub-2714224,Peking_1,0,./data/cached_features/Peking_1_sub-2714224_aal116.npy,236,116,10.0,,0,0,0.8077638663823947,Correct
+sub-2833684,Peking_1,0,./data/cached_features/Peking_1_sub-2833684_aal116.npy,236,116,10.42,,0,0,0.6420621172860551,Correct
+sub-2897046,Peking_1,1,./data/cached_features/Peking_1_sub-2897046_aal116.npy,236,116,9.17,,1,0,0.6980577904067302,False Negative (ADHD -> Control Error)
+sub-2910270,Peking_1,1,./data/cached_features/Peking_1_sub-2910270_aal116.npy,236,116,13.83,,1,1,0.27373811053847236,Correct
+sub-3004580,Peking_1,0,./data/cached_features/Peking_1_sub-3004580_aal116.npy,236,116,14.0,,0,1,0.7158885850876175,False Positive (Control -> ADHD Error)
+sub-3169448,Peking_1,1,./data/cached_features/Peking_1_sub-3169448_aal116.npy,235,116,11.0,,1,0,0.4157870338419848,False Negative (ADHD -> Control Error)
+sub-3233028,Peking_1,0,./data/cached_features/Peking_1_sub-3233028_aal116.npy,236,116,10.42,,0,0,0.42403570328598106,Correct
+sub-3239413,Peking_1,0,./data/cached_features/Peking_1_sub-3239413_aal116.npy,236,116,9.25,,0,1,0.6751296122490502,False Positive (Control -> ADHD Error)
+sub-3269608,Peking_1,0,./data/cached_features/Peking_1_sub-3269608_aal116.npy,236,116,12.08,,0,0,0.12531032898197036,Correct
+sub-3407871,Peking_1,1,./data/cached_features/Peking_1_sub-3407871_aal116.npy,235,116,13.33,,1,0,0.2601639898753931,False Negative (ADHD -> Control Error)
+sub-3504058,Peking_1,1,./data/cached_features/Peking_1_sub-3504058_aal116.npy,235,116,13.17,,1,1,0.290051998498474,Correct
+sub-3520880,Peking_1,1,./data/cached_features/Peking_1_sub-3520880_aal116.npy,235,116,9.83,,1,0,0.506102895683881,False Negative (ADHD -> Control Error)
+sub-3559087,Peking_1,1,./data/cached_features/Peking_1_sub-3559087_aal116.npy,235,116,12.58,,1,0,0.48878188299829733,False Negative (ADHD -> Control Error)
+sub-3834703,Peking_1,1,./data/cached_features/Peking_1_sub-3834703_aal116.npy,235,116,12.92,,1,0,0.4785570901441708,False Negative (ADHD -> Control Error)
+sub-4028266,Peking_1,1,./data/cached_features/Peking_1_sub-4028266_aal116.npy,236,116,9.25,,1,0,0.217394061540998,False Negative (ADHD -> Control Error)
+sub-4091983,Peking_1,1,./data/cached_features/Peking_1_sub-4091983_aal116.npy,236,116,12.17,,1,1,0.8525893883137192,Correct
+sub-5150328,Peking_1,1,./data/cached_features/Peking_1_sub-5150328_aal116.npy,236,116,15.92,,1,0,0.36121603448922346,False Negative (ADHD -> Control Error)
+sub-5600820,Peking_1,0,./data/cached_features/Peking_1_sub-5600820_aal116.npy,236,116,11.92,,0,0,0.37135818197272086,Correct
+sub-6550938,Peking_1,0,./data/cached_features/Peking_1_sub-6550938_aal116.npy,235,116,11.5,,0,1,0.5184793038895297,False Positive (Control -> ADHD Error)
+sub-7135128,Peking_1,0,./data/cached_features/Peking_1_sub-7135128_aal116.npy,236,116,13.92,,0,0,0.6380010621212373,Correct
+sub-8328877,Peking_1,0,./data/cached_features/Peking_1_sub-8328877_aal116.npy,236,116,13.75,,0,0,0.11838785980242222,Correct
+sub-8463326,Peking_1,1,./data/cached_features/Peking_1_sub-8463326_aal116.npy,235,116,12.67,,1,0,0.133940131187041,False Negative (ADHD -> Control Error)
+sub-9221927,Peking_1,0,./data/cached_features/Peking_1_sub-9221927_aal116.npy,236,116,11.83,,0,0,0.2775743602701599,Correct
+sub-9783279,Peking_1,0,./data/cached_features/Peking_1_sub-9783279_aal116.npy,236,116,12.75,,0,0,0.23302670888962035,Correct
+sub-9890726,Peking_1,0,./data/cached_features/Peking_1_sub-9890726_aal116.npy,236,116,9.25,,0,0,0.1592075667530403,Correct
+sub-0016004,Pittsburgh,0,./data/cached_features/Pittsburgh_sub-0016004_aal116.npy,196,116,10.49,,0,0,0.3938824858165675,Correct
+sub-0016005,Pittsburgh,0,./data/cached_features/Pittsburgh_sub-0016005_aal116.npy,196,116,10.57,,0,1,0.5483518660344973,False Positive (Control -> ADHD Error)
+sub-0016009,Pittsburgh,0,./data/cached_features/Pittsburgh_sub-0016009_aal116.npy,196,116,11.12,,0,0,0.10767248069810034,Correct
+sub-0016010,Pittsburgh,0,./data/cached_features/Pittsburgh_sub-0016010_aal116.npy,196,116,11.24,,0,1,0.45619352975091376,False Positive (Control -> ADHD Error)
+sub-0016012,Pittsburgh,0,./data/cached_features/Pittsburgh_sub-0016012_aal116.npy,196,116,11.41,,0,0,0.2283220973696506,Correct
+sub-0016020,Pittsburgh,0,./data/cached_features/Pittsburgh_sub-0016020_aal116.npy,196,116,12.35,,0,1,0.5089223431731545,False Positive (Control -> ADHD Error)
+sub-0016022,Pittsburgh,0,./data/cached_features/Pittsburgh_sub-0016022_aal116.npy,196,116,12.47,,0,1,0.4796396425086812,False Positive (Control -> ADHD Error)
+sub-0016023,Pittsburgh,0,./data/cached_features/Pittsburgh_sub-0016023_aal116.npy,196,116,12.51,,0,0,0.735085811136456,Correct
+sub-0016024,Pittsburgh,0,./data/cached_features/Pittsburgh_sub-0016024_aal116.npy,196,116,12.65,,0,0,0.47358894185526845,Correct
+sub-0016025,Pittsburgh,0,./data/cached_features/Pittsburgh_sub-0016025_aal116.npy,196,116,12.71,,0,0,0.1748121904734802,Correct
+sub-0016026,Pittsburgh,0,./data/cached_features/Pittsburgh_sub-0016026_aal116.npy,196,116,12.88,,0,0,0.6212278469812351,Correct
+sub-0016028,Pittsburgh,0,./data/cached_features/Pittsburgh_sub-0016028_aal116.npy,196,116,13.03,,0,0,0.5650410602095605,Correct
+sub-0016030,Pittsburgh,0,./data/cached_features/Pittsburgh_sub-0016030_aal116.npy,196,116,13.44,,0,1,0.7642483453106768,False Positive (Control -> ADHD Error)
+sub-0016032,Pittsburgh,0,./data/cached_features/Pittsburgh_sub-0016032_aal116.npy,196,116,13.65,,0,0,0.4328039813146547,Correct
+sub-0016038,Pittsburgh,0,./data/cached_features/Pittsburgh_sub-0016038_aal116.npy,196,116,14.24,,0,0,0.27288801441691657,Correct
+sub-0016039,Pittsburgh,0,./data/cached_features/Pittsburgh_sub-0016039_aal116.npy,196,116,14.57,,0,1,0.8406537127139959,False Positive (Control -> ADHD Error)
+sub-0016040,Pittsburgh,0,./data/cached_features/Pittsburgh_sub-0016040_aal116.npy,196,116,14.63,,0,0,0.3223655407080279,Correct
+sub-0016043,Pittsburgh,0,./data/cached_features/Pittsburgh_sub-0016043_aal116.npy,196,116,14.85,,0,0,0.14512374897954655,Correct
+sub-0016046,Pittsburgh,0,./data/cached_features/Pittsburgh_sub-0016046_aal116.npy,196,116,14.99,,0,1,0.24168170251581378,False Positive (Control -> ADHD Error)
+sub-0016048,Pittsburgh,0,./data/cached_features/Pittsburgh_sub-0016048_aal116.npy,196,116,15.56,,0,0,0.5772497717105725,Correct
+sub-0016049,Pittsburgh,0,./data/cached_features/Pittsburgh_sub-0016049_aal116.npy,196,116,15.69,,0,1,0.7826535539895161,False Positive (Control -> ADHD Error)
+sub-0016050,Pittsburgh,0,./data/cached_features/Pittsburgh_sub-0016050_aal116.npy,196,116,15.78,,0,0,0.23917198164799905,Correct
+sub-0016053,Pittsburgh,0,./data/cached_features/Pittsburgh_sub-0016053_aal116.npy,196,116,15.92,,0,1,0.5597018111828284,False Positive (Control -> ADHD Error)
+sub-0016055,Pittsburgh,0,./data/cached_features/Pittsburgh_sub-0016055_aal116.npy,196,116,16.16,,0,0,0.24232113119633691,Correct
+sub-0016058,Pittsburgh,0,./data/cached_features/Pittsburgh_sub-0016058_aal116.npy,196,116,17.01,,0,0,0.49255425370943273,Correct
+sub-0016061,Pittsburgh,0,./data/cached_features/Pittsburgh_sub-0016061_aal116.npy,196,116,17.23,,0,0,0.1354329191988782,Correct
+sub-0016062,Pittsburgh,0,./data/cached_features/Pittsburgh_sub-0016062_aal116.npy,196,116,17.44,,0,1,0.5333244747961955,False Positive (Control -> ADHD Error)
+sub-0016063,Pittsburgh,0,./data/cached_features/Pittsburgh_sub-0016063_aal116.npy,196,116,17.46,,0,1,0.5678986246040768,False Positive (Control -> ADHD Error)
+sub-0016065,Pittsburgh,0,./data/cached_features/Pittsburgh_sub-0016065_aal116.npy,196,116,17.84,,0,1,0.836810813877376,False Positive (Control -> ADHD Error)
+sub-0016071,Pittsburgh,0,./data/cached_features/Pittsburgh_sub-0016071_aal116.npy,196,116,18.33,,0,1,0.6047411662726341,False Positive (Control -> ADHD Error)
+sub-0016087,Pittsburgh,0,./data/cached_features/Pittsburgh_sub-0016087_aal116.npy,196,116,18.96,,0,0,0.3402449206606556,Correct

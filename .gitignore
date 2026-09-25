@@ -1,0 +1,22 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# macOS artifacts
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Environment and IDE settings
+.vscode/
+.idea/
+.venv/
+env/
+venv/
+ENV/
+
+# Large raw neuroimaging files (if downloaded locally)
+*.nii
+*.nii.gz
+raw_data/

@@ -1,0 +1,2 @@
+accuracy,precision,recall_sensitivity,specificity,f1_score,roc_auc,confusion_matrix,site
+0.5111111111111111,0.5,0.5909090909090909,0.43478260869565216,0.5416666666666666,0.5474308300395256,"{'TN': 10, 'FP': 13, 'FN': 9, 'TP': 13}",Peking_1

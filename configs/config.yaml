@@ -1,0 +1,64 @@
+# Master configuration for ADHD-200 Spatiotemporal Classification Pipeline
+
+dataset:
+  raw_data_dir: "/Volumes/Lexar/ADHD200_RawDataBIDS"
+  cache_dir: "./data/cached_features"
+  atlas: "aal"  # AAL atlas with 116 regions
+  sites:
+    - "Brown"
+    - "KKI"
+    - "NYU"
+    - "NeuroIMAGE"
+    - "OHSU"
+    - "Peking_1"
+    - "Peking_2"
+    - "Peking_3"
+    - "Pittsburgh"
+    - "WashU"
+
+preprocessing:
+  smoothing_fwhm: 6.0
+  high_pass: 0.01
+  low_pass: 0.1
+  t_r: 2.0
+  detrend: true
+  standardize: "zscore_sample"
+
+connectivity:
+  window_length: 30  # timepoints per window (~60s if TR=2s)
+  stride: 10         # overlap stride (~20s)
+  metric: "pearson"   # pearson correlation between ROIs
+
+dae:
+  enabled: true
+  input_dim: 116
+  hidden_dims: [64, 32, 64]
+  noise_factor: 0.2
+  lr: 0.001
+  epochs: 30
+  batch_size: 32
+
+conv_lstm:
+  in_channels: 1
+  conv_channels: [32, 64]
+  kernel_size: [3, 3]
+  lstm_hidden_dim: 128
+  lstm_num_layers: 1
+  dropout: 0.3
+  fc_hidden_dims: [64]
+
+training:
+  batch_size: 16
+  epochs: 40
+  lr: 0.0003
+  weight_decay: 0.0001
+  device: "mps"  # mps or cpu or cuda
+  early_stopping_patience: 10
+
+explainability:
+  grad_cam_target_layer: "conv2"
+  top_k_edges: 20
+  top_k_rois: 10
+
+logging:
+  results_dir: "./results"
