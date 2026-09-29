@@ -218,8 +218,19 @@ def upload_scan():
         tmp_path = tmp.name
         
     try:
+        # Check scan dimension (ensure it's 4D fMRI, not 3D structural anatomical)
+        import nibabel as nib
+        img_obj = nib.load(tmp_path)
+        img_shape = img_obj.shape
+        if len(img_shape) < 4 or (len(img_shape) == 4 and img_shape[3] <= 1):
+            if os.path.exists(tmp_path):
+                os.remove(tmp_path)
+            return jsonify({
+                "error": f"The selected file appears to be a 3D structural scan from the 'anat/' folder (shape: {img_shape}). Please choose the 4D resting-state scan from the 'func/' folder (ends with '_bold.nii.gz')."
+            }), 400
+
         # Nilearn on-the-fly extraction
-        print(f"[INFO] Parcellating uploaded scan: {filename}...", flush=True)
+        print(f"[INFO] Parcellating uploaded 4D fMRI scan: {filename} (shape: {img_shape})...", flush=True)
         atlas = datasets.fetch_atlas_aal(version='SPM12')
         masker = NiftiLabelsMasker(
             labels_img=atlas.maps,

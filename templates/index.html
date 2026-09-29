@@ -391,12 +391,21 @@
                 <p class="text-sm text-slate-400 mb-6">Drag and drop a 4D resting-state scan (<code class="text-blue-400">.nii</code> or <code class="text-blue-400">.nii.gz</code>). The pipeline will automatically parcellate the 116 AAL brain regions and run deep inference.</p>
 
                 <!-- Dropzone -->
-                <div id="dropzone" class="border-2 border-dashed border-slate-700 hover:border-blue-500 rounded-2xl p-8 transition cursor-pointer bg-slate-900/50 mb-6">
+                <div id="dropzone" class="border-2 border-dashed border-slate-700 hover:border-blue-500 rounded-2xl p-8 transition cursor-pointer bg-slate-900/50 mb-4">
                     <input type="file" id="file-input" accept=".nii,.gz,.nii.gz,application/gzip,application/x-gzip,*" class="hidden" onchange="handleFileSelected(this.files)">
                     <div onclick="document.getElementById('file-input').click()">
                         <i data-lucide="file-video" class="w-10 h-10 text-slate-500 mx-auto mb-3"></i>
                         <p class="text-sm font-semibold text-slate-200">Click to browse or drop MRI scan file here</p>
                         <p class="text-xs text-slate-500 mt-1">Supports NIfTI-1 formats (up to 500 MB)</p>
+                    </div>
+                </div>
+
+                <!-- BIDS Guidance Box -->
+                <div class="p-3 mb-6 rounded-xl bg-blue-950/40 border border-blue-800/40 text-left text-xs text-slate-300 flex items-start space-x-2.5">
+                    <i data-lucide="info" class="w-4 h-4 text-blue-400 mt-0.5 shrink-0"></i>
+                    <div>
+                        <span class="font-semibold text-blue-300">Dataset Folder Guide:</span>
+                        Select the 4D scan from the <code class="text-blue-300 bg-blue-900/50 px-1 py-0.5 rounded">func/</code> folder (e.g. <code class="text-emerald-300 bg-slate-800 px-1 py-0.5 rounded">..._task-rest_run-1_bold.nii.gz</code>). Avoid files in <code class="text-slate-400 bg-slate-800 px-1 py-0.5 rounded">anat/</code>, as those are static 3D anatomical images without temporal brain dynamics.
                     </div>
                 </div>
 
