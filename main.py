@@ -29,7 +29,7 @@ def main():
     results_dir = config['logging']['results_dir']
     os.makedirs(results_dir, exist_ok=True)
     
-    # 1. Step 1-4: Parcellate / verify AAL ROI time series for ADHD-200 dataset
+
     manifest_path = os.path.join(cache_dir, "dataset_manifest.csv")
     if not os.path.exists(manifest_path):
         print("[STEP 1/5] Extracting AAL ROI time series for ADHD-200 subjects...")
@@ -42,7 +42,7 @@ def main():
     print("\nSubject distribution across imaging sites:")
     print(pd.crosstab(manifest_df['site'], manifest_df['label'], margins=True))
     
-    # 2. Step 5-11: Execute Leave-One-Site-Out (LOSO) Cross-Validation Benchmark
+
     print("\n[STEP 2/5] Running Leave-One-Site-Out (LOSO) Cross-Validation on ConvLSTM Classifier...")
     trainer = LOSOTrainer(manifest_df, config=config)
     loso_results = trainer.run_loso_cross_validation(
@@ -54,7 +54,7 @@ def main():
     )
     loso_results.to_csv(os.path.join(results_dir, "loso_cross_validation_results.csv"), index=False)
     
-    # 3. Step 15: Run Grad-CAM Explainability & Map to AAL Brain ROIs + Edges
+
     print("\n[STEP 3/5] Running Grad-CAM Explainability Analysis...")
     sample_sub_path = manifest_df.iloc[0]['feature_path']
     ts_sample = np.load(sample_sub_path)
@@ -85,22 +85,19 @@ def main():
     for e in cam_results['top_edges'][:5]:
         print(f"   Rank {e['rank']}: {e['roi1_name']} <---> {e['roi2_name']} (Weight: {e['edge_weight']:.4f})")
         
-    # Save explainability report
     pd.DataFrame(cam_results['top_rois']).to_csv(os.path.join(results_dir, "top_influential_rois.csv"), index=False)
     pd.DataFrame(cam_results['top_edges']).to_csv(os.path.join(results_dir, "top_influential_edges.csv"), index=False)
     
-    # 4. Step 14: Run Automated Ablation Benchmarks
+    
     print("\n[STEP 4/5] Running Automated Pipeline Ablation Benchmarks...")
     ablation_df = run_ablation_experiments(manifest_df, output_dir=results_dir, epochs=15)
     
-    # 5. Step 16: Failure Analysis Report
     print("\n[STEP 5/5] Generating Failure Analysis Report...")
     # Generate dummy probabilities for manifest for failure analysis demonstration
     dummy_probs = np.random.uniform(0.1, 0.9, size=(len(manifest_df), 2))
     dummy_preds = np.argmax(dummy_probs, axis=1)
     analyze_prediction_failures(manifest_df, manifest_df['label'].values, dummy_preds, dummy_probs, output_dir=results_dir)
     
-    # Generate updated visual charts
     print("\n[STEP 6/6] Generating updated publication-grade visual charts...")
     import subprocess
     subprocess.run([sys.executable, "visualize_results.py"], check=False)

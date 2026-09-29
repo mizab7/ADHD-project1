@@ -392,7 +392,7 @@
 
                 <!-- Dropzone -->
                 <div id="dropzone" class="border-2 border-dashed border-slate-700 hover:border-blue-500 rounded-2xl p-8 transition cursor-pointer bg-slate-900/50 mb-6">
-                    <input type="file" id="file-input" accept=".nii,.nii.gz" class="hidden" onchange="handleFileSelected(this.files)">
+                    <input type="file" id="file-input" accept=".nii,.gz,.nii.gz,application/gzip,application/x-gzip,*" class="hidden" onchange="handleFileSelected(this.files)">
                     <div onclick="document.getElementById('file-input').click()">
                         <i data-lucide="file-video" class="w-10 h-10 text-slate-500 mx-auto mb-3"></i>
                         <p class="text-sm font-semibold text-slate-200">Click to browse or drop MRI scan file here</p>
@@ -626,6 +626,32 @@
                 });
 
                 filterPatients();
+
+                // Setup Drag & Drop for raw scan
+                const dropzone = document.getElementById('dropzone');
+                if (dropzone) {
+                    ['dragenter', 'dragover'].forEach(eventName => {
+                        dropzone.addEventListener(eventName, (e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            dropzone.classList.add('border-blue-500', 'bg-blue-950/30');
+                        }, false);
+                    });
+                    ['dragleave', 'drop'].forEach(eventName => {
+                        dropzone.addEventListener(eventName, (e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            dropzone.classList.remove('border-blue-500', 'bg-blue-950/30');
+                        }, false);
+                    });
+                    dropzone.addEventListener('drop', (e) => {
+                        const dt = e.dataTransfer;
+                        const files = dt.files;
+                        if (files && files.length > 0) {
+                            handleFileSelected(files);
+                        }
+                    }, false);
+                }
             } catch (err) {
                 console.error("Failed to load patients:", err);
             }
@@ -843,6 +869,12 @@
         function handleFileSelected(files) {
             if (!files || files.length === 0) return;
             selectedFile = files[0];
+            const name = selectedFile.name.toLowerCase();
+            if (!name.endsWith('.nii') && !name.endsWith('.nii.gz') && !name.endsWith('.gz')) {
+                alert("Please select a valid .nii or .nii.gz fMRI brain scan file.");
+                clearUpload();
+                return;
+            }
             document.getElementById('upload-filename').textContent = selectedFile.name;
             document.getElementById('upload-filesize').textContent = (selectedFile.size / (1024 * 1024)).toFixed(1) + ' MB';
             document.getElementById('selected-file-info').classList.remove('hidden');

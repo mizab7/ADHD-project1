@@ -14,7 +14,7 @@ from werkzeug.utils import secure_filename
 from nilearn import datasets
 from nilearn.maskers import NiftiLabelsMasker
 
-# Add project root to sys.path
+
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from models.conv_lstm import ConvLSTMClassifier
@@ -22,12 +22,10 @@ from models.connectivity import DynamicConnectivityGenerator
 from explainability.grad_cam import ConvLSTMGradCAM, get_aal116_labels
 
 app = Flask(__name__)
-app.config['MAX_CONTENT_LENGTH'] = 500 * 1024 * 1024  # Allow uploads up to 500 MB
+app.config['MAX_CONTENT_LENGTH'] = 500 * 1024 * 1024 
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
-# -----------------------------------------------------------------------------
-# Global Resources (Loaded once at startup)
-# -----------------------------------------------------------------------------
+
 print("[INIT] Loading model, atlas labels, and dataset manifest...", flush=True)
 
 device = torch.device("mps" if torch.backends.mps.is_available() else ("cuda" if torch.cuda.is_available() else "cpu"))
@@ -209,11 +207,12 @@ def upload_scan():
         
     file = request.files['file']
     filename = secure_filename(file.filename)
-    if not (filename.endswith('.nii') or filename.endswith('.nii.gz')):
+    lower_fn = filename.lower()
+    if not (lower_fn.endswith('.nii') or lower_fn.endswith('.nii.gz') or lower_fn.endswith('.gz')):
         return jsonify({"error": "File must be .nii or .nii.gz"}), 400
         
     # Save to temp file
-    suffix = ".nii.gz" if filename.endswith('.nii.gz') else ".nii"
+    suffix = ".nii.gz" if (lower_fn.endswith('.nii.gz') or lower_fn.endswith('.gz')) else ".nii"
     with tempfile.NamedTemporaryFile(suffix=suffix, delete=False) as tmp:
         file.save(tmp.name)
         tmp_path = tmp.name
@@ -233,8 +232,11 @@ def upload_scan():
         )
         time_series = masker.fit_transform(tmp_path)
         
-        # Ensure 116 ROIs
-        if time_series.shape[1] > 116:
+        # Ensure exactly 116 ROIs
+        if time_series.shape[1] < 116:
+            pad_rois = np.zeros((time_series.shape[0], 116 - time_series.shape[1]), dtype=time_series.dtype)
+            time_series = np.hstack([time_series, pad_rois])
+        elif time_series.shape[1] > 116:
             time_series = time_series[:, :116]
             
         dyn_conn = conn_gen.generate_dynamic_connectivity(time_series)
