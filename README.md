@@ -123,13 +123,30 @@ dataset:
   raw_data_dir: "/Volumes/Lexar/ADHD200_RawDataBIDS"
 ```
 
-### 3. Run End-to-End Pipeline
-Execute the master runner to perform AAL ROI extraction, LOSO cross-validation, Grad-CAM explainability, pipeline ablations, and failure analysis:
+### 3. Launch Interactive Flask Web Dashboard
+Run the clinical diagnostic web suite locally:
 ```bash
-python3 main.py
+python3 app_flask.py
+```
+Open **`http://localhost:5001`** to access:
+- **Patient Cohort Analysis:** Instant sub-second inference across 239 ADHD-200 patients with dynamic 116×116 connectivity heatmaps and Grad-CAM ROI rankings.
+- **Raw fMRI Upload:** Upload any `.nii` or `.nii.gz` 4D resting-state scan for on-the-fly Nilearn AAL parcellation and classification.
+- **Clinical Decision Support (CDS) & Care Plan:** Neurocircuit-guided behavioral, classroom (504/IEP), and medical recommendations with printable PDF report.
+- **📍 Location-Based Doctor Finder:** Auto-detects user GPS/IP location, queries real OpenStreetMap local hospitals/clinics, and features interactive Leaflet maps with live Google Maps embed.
+- **Ablation & LOSO Benchmarks:** Live interactive tables and performance plots across all 7 architectural configurations.
+
+### 4. Fast CLI Inference
+Run single-patient prediction directly from the terminal in <0.5 seconds:
+```bash
+python3 predict.py --subject sub-1019436
 ```
 
-### 4. Run Individual Modules
+### 5. Google Colab / Kaggle Cloud Training
+Train the full ConvLSTM model on GPU in the cloud:
+- Open `ADHD_Training_Colab_Kaggle.ipynb` in Google Colab or Kaggle.
+- Pre-configured with automatic dataset downloading, AAL extraction, DAE denoising, ComBat harmonization, and model export (`trained_convlstm.pt`).
+
+### 6. Run Individual Modules
 - **Extract & Cache AAL ROI Time Series:**
   ```bash
   python3 data/roi_extraction.py

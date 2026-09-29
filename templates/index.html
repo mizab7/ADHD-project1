@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADHD NeuroAI Diagnostic Suite</title>
+    <!-- Tailwind CSS (Served locally to prevent DNS NXDOMAIN failures, with CDN fallback) -->
+    <script src="{{ url_for('static', filename='js/tailwindcss.js') }}"></script>
+    <script>
+        if (typeof tailwind === 'undefined') {
+            document.write('<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"><\/script>');
+        }
+    </script>
+    <!-- Plotly.js (Served locally with fallback) -->
+    <script src="{{ url_for('static', filename='js/plotly.min.js') }}"></script>
+    <script>
+        if (typeof Plotly === 'undefined') {
+            document.write('<script src="https://cdn.plot.ly/plotly-2.27.0.min.js"><\/script>');
+        }
+    </script>
+    <!-- Lucide Icons (Served locally with fallback) -->
+    <script src="{{ url_for('static', filename='js/lucide.min.js') }}"></script>
+    <script>
+        if (typeof lucide === 'undefined') {
+            document.write('<script src="https://unpkg.com/lucide@latest"><\/script>');
+        }
+    </script>
+    <!-- Leaflet.js for Interactive Maps -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/leaflet.css') }}">
+    <script src="{{ url_for('static', filename='js/leaflet.js') }}"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        
+        /* Critical utility fallback */
+        .hidden { display: none !important; }
+
+        body { 
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+            background-color: #0B0F19; 
+            color: #F8FAFC; 
+            min-height: 100vh;
+        }
+
+        /* Sleek Modern Glassmorphism */
+        .glass-card { 
+            background: rgba(17, 24, 39, 0.75); 
+            backdrop-filter: blur(16px); 
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08); 
+            border-radius: 16px; 
+            box-shadow: 0 4px 24px -2px rgba(0, 0, 0, 0.4);
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .glass-card:hover {
+            border-color: rgba(255, 255, 255, 0.14);
+        }
+
+        /* Navigation Tab Styling */
+        .tab-btn {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .tab-btn.active { 
+            background: linear-gradient(135deg, #2563eb, #3b82f6) !important; 
+            color: #ffffff !important; 
+            font-weight: 600;
+            box-shadow: 0 4px 14px 0 rgba(37, 99, 235, 0.35);
+        }
+
+        /* Custom Modern Scrollbars */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #0b0f19; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; border: 2px solid #0b0f19; }
+        ::-webkit-scrollbar-thumb:hover { background: #334155; }
+
+        #doctors-map { height: 480px; width: 100%; border-radius: 14px; z-index: 10; }
+        .leaflet-popup-content-wrapper { background: #1E293B !important; color: #F8FAFC !important; border-radius: 12px !important; border: 1px solid #334155 !important; }
+        .leaflet-popup-tip { background: #1E293B !important; }
+
+        /* Smooth Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.25s ease-out forwards;
+        }
+
+        @media print {
+            body { background-color: #ffffff !important; color: #0f172a !important; }
+            nav, footer, .tab-btn, #site-filter, #diag-filter, #patient-select, button, #section-benchmarks, #dropzone, #section-upload, select, .no-print, #section-doctors { display: none !important; }
+            .glass-card { background: #ffffff !important; border: 1px solid #cbd5e1 !important; color: #0f172a !important; box-shadow: none !important; margin-bottom: 1.25rem !important; }
+            #verdict-text, #verdict-sub, #gt-text, h1, h2, h3, h4, p, span, strong { color: #0f172a !important; }
+            #clinical-support-card { border-left: 6px solid #4f46e5 !important; background: #f8fafc !important; }
+            .print-badge { border: 1px solid #94a3b8 !important; color: #0f172a !important; background: #f1f5f9 !important; }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Top Navigation Bar -->
+    <nav class="border-b border-slate-800 bg-slate-900/80 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow-lg shadow-blue-500/30">
+                    <i data-lucide="brain" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg leading-tight text-white">ADHD NeuroAI Suite</h1>
+                    <p class="text-xs text-slate-400">fMRI Spatiotemporal Deep Learning</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-3">
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 mr-2 animate-pulse"></span>
+                    Model: ConvLSTM (Active)
+                </span>
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-500/10 text-blue-400 border border-blue-500/20">
+                    Atlas: AAL-116
+                </span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <main class="max-w-7xl mx-auto px-6 py-8 flex-1 w-full">
+        
+        <!-- Navigation Tabs -->
+        <div class="flex space-x-2 bg-slate-900/60 p-1.5 rounded-2xl border border-slate-800 mb-8 max-w-3xl overflow-x-auto">
+            <button onclick="switchTab('cached')" id="tab-cached" class="tab-btn active flex-1 py-2.5 px-4 rounded-xl text-sm font-medium text-slate-400 hover:text-white transition flex items-center justify-center space-x-2 shrink-0">
+                <i data-lucide="users" class="w-4 h-4"></i>
+                <span>Patient Cohort (239)</span>
+            </button>
+            <button onclick="switchTab('upload')" id="tab-upload" class="tab-btn flex-1 py-2.5 px-4 rounded-xl text-sm font-medium text-slate-400 hover:text-white transition flex items-center justify-center space-x-2 shrink-0">
+                <i data-lucide="upload-cloud" class="w-4 h-4"></i>
+                <span>Upload Raw Scan (.nii.gz)</span>
+            </button>
+            <button onclick="switchTab('doctors')" id="tab-doctors" class="tab-btn flex-1 py-2.5 px-4 rounded-xl text-sm font-medium text-slate-400 hover:text-white transition flex items-center justify-center space-x-2 shrink-0">
+                <i data-lucide="map-pin" class="w-4 h-4 text-rose-400"></i>
+                <span>Nearby Doctors (Maps)</span>
+            </button>
+            <button onclick="switchTab('benchmarks')" id="tab-benchmarks" class="tab-btn flex-1 py-2.5 px-4 rounded-xl text-sm font-medium text-slate-400 hover:text-white transition flex items-center justify-center space-x-2 shrink-0">
+                <i data-lucide="bar-chart-3" class="w-4 h-4"></i>
+                <span>Benchmarks</span>
+            </button>
+        </div>
+
+        <!-- =================================================================== -->
+        <!-- TAB 1: CACHED PATIENT ANALYSIS -->
+        <!-- =================================================================== -->
+        <section id="section-cached">
+            <!-- Selector Controls Card -->
+            <div class="glass-card p-6 mb-8">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Filter Hospital Site</label>
+                        <select id="site-filter" onchange="filterPatients()" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500">
+                            <option value="ALL">All Hospitals (6 Sites)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Filter Diagnosis</label>
+                        <select id="diag-filter" onchange="filterPatients()" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500">
+                            <option value="ALL">All Diagnoses</option>
+                            <option value="ADHD">ADHD Cases Only</option>
+                            <option value="Control">Controls Only</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Select Patient ID</label>
+                        <select id="patient-select" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500">
+                            <!-- Populated dynamically -->
+                        </select>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button onclick="runCachedPrediction()" class="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2.5 px-4 rounded-xl text-sm transition shadow-lg shadow-blue-600/30 flex items-center justify-center space-x-2">
+                            <i data-lucide="play" class="w-4 h-4"></i>
+                            <span>Run AI Analysis</span>
+                        </button>
+                        <button onclick="pickRandomPatient()" title="Pick Random Patient" class="bg-slate-800 hover:bg-slate-700 text-slate-300 p-2.5 rounded-xl border border-slate-700 transition">
+                            <i data-lucide="dice-5" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results View Container -->
+            <div id="cached-result-container" class="hidden space-y-8">
+                <!-- Top Diagnostic Banner Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Verdict Card -->
+                    <div id="verdict-card" class="glass-card p-6 flex flex-col justify-between border-l-4">
+                        <div>
+                            <span class="text-xs uppercase font-bold tracking-wider text-slate-400">AI Diagnostic Verdict</span>
+                            <h2 id="verdict-text" class="text-2xl font-extrabold mt-1">--</h2>
+                            <p id="verdict-sub" class="text-sm mt-1 text-slate-300">--</p>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-slate-700/50 flex justify-between text-xs text-slate-400">
+                            <span>Latency: <strong id="latency-text" class="text-slate-200">0.0 ms</strong></span>
+                            <span>Model: <strong class="text-blue-400">ConvLSTM-2D</strong></span>
+                        </div>
+                    </div>
+
+                    <!-- Confidence Gauge Card -->
+                    <div class="glass-card p-6 flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-xs uppercase font-bold tracking-wider text-slate-400">Confidence Metric</span>
+                                <span id="conf-val" class="text-lg font-bold text-white">0%</span>
+                            </div>
+                            <div class="w-full bg-slate-800 rounded-full h-3 overflow-hidden">
+                                <div id="conf-bar" class="h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full transition-all duration-500" style="width: 0%"></div>
+                            </div>
+                            <div class="flex justify-between text-xs text-slate-400 mt-3">
+                                <span>P(Control): <strong id="p-ctrl" class="text-slate-200">0%</strong></span>
+                                <span>P(ADHD): <strong id="p-adhd" class="text-slate-200">0%</strong></span>
+                            </div>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-slate-700/50 text-xs text-slate-400">
+                            Prevalence-Calibrated Optimal Cutoff Applied
+                        </div>
+                    </div>
+
+                    <!-- Clinical Ground Truth Card -->
+                    <div class="glass-card p-6 flex flex-col justify-between">
+                        <div>
+                            <span class="text-xs uppercase font-bold tracking-wider text-slate-400">Clinical Verification</span>
+                            <div class="flex items-center space-x-3 mt-2">
+                                <div id="agreement-icon" class="w-10 h-10 rounded-xl flex items-center justify-center">
+                                    <i data-lucide="check" class="w-6 h-6"></i>
+                                </div>
+                                <div>
+                                    <h3 id="gt-text" class="text-lg font-bold text-white">--</h3>
+                                    <p id="agreement-text" class="text-xs text-slate-400">Ground Truth Comparison</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-slate-700/50 flex justify-between text-xs text-slate-400">
+                            <span>Site: <strong id="meta-site" class="text-slate-200">--</strong></span>
+                            <span>Age: <strong id="meta-age" class="text-slate-200">--</strong></span>
+                            <span>Duration: <strong id="meta-duration" class="text-slate-200">--</strong></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Clinical Decision Support & Doctor Recommendations Card -->
+                <div id="clinical-support-card" class="glass-card p-6 border-l-4 border-indigo-500">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b border-slate-700/60 gap-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 rounded-xl bg-indigo-600/20 text-indigo-400 border border-indigo-500/30 flex items-center justify-center shrink-0">
+                                <i data-lucide="stethoscope" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <div class="flex items-center space-x-2 flex-wrap gap-y-1">
+                                    <h3 class="text-lg font-bold text-white">Clinical Decision Support & Doctor Recommendations</h3>
+                                    <span id="subtype-badge" class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">Assessing Subtype...</span>
+                                </div>
+                                <p class="text-xs text-slate-400">Circuit-guided behavioral, educational, and medical care recommendations derived from fMRI functional connectivity</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-2 no-print shrink-0">
+                            <button onclick="openDoctorFinderForPatient()" class="px-3.5 py-2 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-xs font-semibold transition flex items-center space-x-1.5 shadow-lg shadow-rose-600/30">
+                                <i data-lucide="map-pin" class="w-4 h-4"></i>
+                                <span>Find Specialists Near You</span>
+                            </button>
+                            <button onclick="window.print()" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-xl text-xs font-medium transition flex items-center space-x-1.5 shadow-sm">
+                                <i data-lucide="printer" class="w-4 h-4 text-blue-400"></i>
+                                <span>Print Clinical Report</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Neurobiological Circuit & Rationale -->
+                    <div class="mt-4 p-4 rounded-xl bg-slate-900/80 border border-slate-800">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                            <div>
+                                <span class="text-slate-400 font-semibold uppercase tracking-wider block mb-1">Primary Affected Neural Circuit</span>
+                                <span id="cds-circuit" class="font-bold text-indigo-300 text-sm">--</span>
+                            </div>
+                            <div class="md:col-span-2">
+                                <span class="text-slate-400 font-semibold uppercase tracking-wider block mb-1">Functional Connectivity Rationale</span>
+                                <p id="cds-rationale" class="text-slate-300 leading-relaxed">--</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 4 Structured Clinical Action Pillars -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
+                        <!-- 1. Behavioral Strategies -->
+                        <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800 flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center space-x-2 mb-3 text-amber-400">
+                                    <i data-lucide="puzzle" class="w-4 h-4"></i>
+                                    <h4 class="text-xs font-bold uppercase tracking-wider">Behavioral Strategies</h4>
+                                </div>
+                                <ul id="cds-behavioral" class="space-y-2 text-xs text-slate-300">
+                                    <!-- Populated dynamically -->
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- 2. Classroom Accommodations -->
+                        <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800 flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center space-x-2 mb-3 text-blue-400">
+                                    <i data-lucide="graduation-cap" class="w-4 h-4"></i>
+                                    <h4 class="text-xs font-bold uppercase tracking-wider">Classroom (504/IEP)</h4>
+                                </div>
+                                <ul id="cds-classroom" class="space-y-2 text-xs text-slate-300">
+                                    <!-- Populated dynamically -->
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- 3. Medical Considerations -->
+                        <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800 flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center space-x-2 mb-3 text-emerald-400">
+                                    <i data-lucide="pill" class="w-4 h-4"></i>
+                                    <h4 class="text-xs font-bold uppercase tracking-wider">Medical & Pharmacotherapy</h4>
+                                </div>
+                                <ul id="cds-medical" class="space-y-2 text-xs text-slate-300">
+                                    <!-- Populated dynamically -->
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- 4. Follow-up & Monitoring -->
+                        <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800 flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center space-x-2 mb-3 text-purple-400">
+                                    <i data-lucide="activity" class="w-4 h-4"></i>
+                                    <h4 class="text-xs font-bold uppercase tracking-wider">Monitoring & Follow-up</h4>
+                                </div>
+                                <p id="cds-monitoring" class="text-xs text-slate-300 leading-relaxed mb-3">--</p>
+                            </div>
+                            <div class="p-2.5 rounded-lg bg-indigo-950/40 border border-indigo-800/40 text-[11px] text-indigo-300">
+                                ⚖️ <strong>Clinical Decision Aid:</strong> Intended for licensed physicians & neurologists. Final diagnosis requires full DSM-5 criteria evaluation.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Deep Visualization Grid (Heatmap & Grad-CAM) -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Left: Brain Functional Connectivity Heatmap -->
+                    <div class="glass-card p-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <div>
+                                <h3 class="font-bold text-base text-white">116 × 116 Brain Functional Connectivity</h3>
+                                <p class="text-xs text-slate-400">Sliding-window Pearson correlation with Fisher z-transform</p>
+                            </div>
+                            <span class="text-xs px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 border border-slate-700">Dynamic Window 1</span>
+                        </div>
+                        <div id="heatmap-plot" class="w-full h-[460px] rounded-xl overflow-hidden bg-slate-950"></div>
+                    </div>
+
+                    <!-- Right: Grad-CAM Explainability Leaderboard -->
+                    <div class="glass-card p-6 flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center mb-4">
+                                <div>
+                                    <h3 class="font-bold text-base text-white">Grad-CAM Influential Brain Regions</h3>
+                                    <p class="text-xs text-slate-400">AAL atlas anatomical structures driving the classification</p>
+                                </div>
+                                <span class="text-xs px-2.5 py-1 rounded-lg bg-blue-500/10 text-blue-400 border border-blue-500/20">Top 10 ROIs</span>
+                            </div>
+                            <div id="rois-plot" class="w-full h-[320px]"></div>
+                        </div>
+
+                        <!-- Affected Circuits Summary -->
+                        <div class="mt-4 pt-4 border-t border-slate-800">
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Top Affected Neural Circuits</h4>
+                            <div id="edges-list" class="space-y-1.5 text-xs text-slate-300">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- TAB 2: UPLOAD RAW SCAN (.NII / .NII.GZ) -->
+        <!-- =================================================================== -->
+        <section id="section-upload" class="hidden space-y-8">
+            <div class="glass-card p-8 text-center max-w-2xl mx-auto">
+                <div class="w-16 h-16 mx-auto rounded-2xl bg-blue-600/10 border border-blue-500/20 text-blue-400 flex items-center justify-center mb-4">
+                    <i data-lucide="upload-cloud" class="w-8 h-8"></i>
+                </div>
+                <h2 class="text-xl font-bold text-white mb-2">Upload Raw fMRI Brain Scan</h2>
+                <p class="text-sm text-slate-400 mb-6">Drag and drop a 4D resting-state scan (<code class="text-blue-400">.nii</code> or <code class="text-blue-400">.nii.gz</code>). The pipeline will automatically parcellate the 116 AAL brain regions and run deep inference.</p>
+
+                <!-- Dropzone -->
+                <div id="dropzone" class="border-2 border-dashed border-slate-700 hover:border-blue-500 rounded-2xl p-8 transition cursor-pointer bg-slate-900/50 mb-6">
+                    <input type="file" id="file-input" accept=".nii,.nii.gz" class="hidden" onchange="handleFileSelected(this.files)">
+                    <div onclick="document.getElementById('file-input').click()">
+                        <i data-lucide="file-video" class="w-10 h-10 text-slate-500 mx-auto mb-3"></i>
+                        <p class="text-sm font-semibold text-slate-200">Click to browse or drop MRI scan file here</p>
+                        <p class="text-xs text-slate-500 mt-1">Supports NIfTI-1 formats (up to 500 MB)</p>
+                    </div>
+                </div>
+
+                <div id="selected-file-info" class="hidden mb-6 p-4 rounded-xl bg-slate-800/80 border border-slate-700 text-left flex justify-between items-center">
+                    <div class="flex items-center space-x-3">
+                        <i data-lucide="file-check" class="w-5 h-5 text-emerald-400"></i>
+                        <div>
+                            <p id="upload-filename" class="text-sm font-medium text-white">scan.nii.gz</p>
+                            <p id="upload-filesize" class="text-xs text-slate-400">-- MB</p>
+                        </div>
+                    </div>
+                    <button onclick="clearUpload()" class="text-slate-400 hover:text-red-400">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+
+                <button id="upload-btn" onclick="submitUploadedScan()" disabled class="w-full bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-500 text-white font-semibold py-3 px-6 rounded-xl transition shadow-lg shadow-blue-600/30 flex items-center justify-center space-x-2">
+                    <i data-lucide="cpu" class="w-5 h-5"></i>
+                    <span>Parcellate & Diagnose Patient</span>
+                </button>
+
+                <!-- Processing Spinner -->
+                <div id="upload-loading" class="hidden mt-6 text-center space-y-3">
+                    <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-blue-500 border-t-transparent"></div>
+                    <p class="text-sm font-medium text-blue-400">Parcellating 116 AAL regions & filtering scanner noise (~15–20s)...</p>
+                </div>
+            </div>
+
+            <!-- Upload Results View Container -->
+            <div id="upload-result-container" class="hidden space-y-8">
+                <!-- Dynamically populated identically to cached results -->
+            </div>
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- TAB 3: BENCHMARKS & SCIENTIFIC ABLATIONS -->
+        <!-- =================================================================== -->
+        <section id="section-benchmarks" class="hidden space-y-8">
+            <div class="glass-card p-6">
+                <h3 class="text-lg font-bold text-white mb-2">Ablation Experiments: Architecture Impact</h3>
+                <p class="text-sm text-slate-400 mb-6">Demonstrates the scientific impact of every modular component (DAE noise filter, ComBat scanner harmonization, and Dynamic connectivity) across held-out hospital sites.</p>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm text-slate-300">
+                        <thead class="text-xs uppercase bg-slate-800/80 text-slate-400 border-b border-slate-700">
+                            <tr>
+                                <th class="py-3 px-4">Architecture Experiment</th>
+                                <th class="py-3 px-4">Model</th>
+                                <th class="py-3 px-4">DAE</th>
+                                <th class="py-3 px-4">ComBat</th>
+                                <th class="py-3 px-4">Connectivity</th>
+                                <th class="py-3 px-4">Accuracy</th>
+                                <th class="py-3 px-4">Sensitivity</th>
+                                <th class="py-3 px-4">Specificity</th>
+                                <th class="py-3 px-4">F1-Score</th>
+                                <th class="py-3 px-4">ROC-AUC</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ablation-table-body" class="divide-y divide-slate-800">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Visual Bar Chart of Ablation Metrics -->
+            <div class="glass-card p-6">
+                <h3 class="text-lg font-bold text-white mb-4">Cross-Hospital Generalization Accuracy by Method</h3>
+                <div id="ablation-chart" class="w-full h-[400px]"></div>
+            </div>
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- TAB 4: FIND NEARBY ADHD DOCTORS & SPECIALISTS -->
+        <!-- =================================================================== -->
+        <section id="section-doctors" class="hidden space-y-8">
+            <!-- Search & Filter Controls -->
+            <div class="glass-card p-6">
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6">
+                    <div>
+                        <div class="flex items-center space-x-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-rose-500 animate-ping"></span>
+                            <h2 class="text-xl font-bold text-white">Find Nearby ADHD Specialists & Clinical Centers</h2>
+                        </div>
+                        <p class="text-xs text-slate-400 mt-1">Locate board-certified pediatric neurologists, ADHD psychiatrists, and neuropsychology centers near you</p>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <a id="btn-open-google-maps" target="_blank" href="https://www.google.com/maps/search/ADHD+specialist+psychiatrist+neurologist" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-xl text-xs font-semibold transition flex items-center space-x-1.5 shadow-sm">
+                            <i data-lucide="map" class="w-4 h-4 text-emerald-400"></i>
+                            <span>Search on Google Maps</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Input Row -->
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-3 items-center">
+                    <div class="md:col-span-6 relative">
+                        <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-4 top-3.5"></i>
+                        <input type="text" id="doctor-query-input" placeholder="Enter city, state, or postal code (e.g. New York, London, Chicago, Boston, Kochi)..." 
+                            onkeydown="if(event.key === 'Enter') executeDoctorSearch()"
+                            class="w-full bg-slate-800/90 border border-slate-700 rounded-xl pl-11 pr-4 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500 transition">
+                    </div>
+                    <div class="md:col-span-3 flex space-x-2">
+                        <button onclick="executeDoctorSearch()" class="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2.5 px-4 rounded-xl text-sm transition shadow-lg shadow-blue-600/30 flex items-center justify-center space-x-2">
+                            <i data-lucide="search" class="w-4 h-4"></i>
+                            <span>Search City</span>
+                        </button>
+                    </div>
+                    <div class="md:col-span-3">
+                        <button onclick="getUserGpsLocation()" class="w-full bg-rose-600 hover:bg-rose-500 text-white font-semibold py-2.5 px-4 rounded-xl text-sm transition shadow-lg shadow-rose-600/30 flex items-center justify-center space-x-2">
+                            <i data-lucide="crosshair" class="w-4 h-4"></i>
+                            <span>Use My GPS Location</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Specialty Filter Pills -->
+                <div class="flex items-center space-x-2 mt-4 pt-4 border-t border-slate-800/80 overflow-x-auto text-xs">
+                    <span class="text-slate-400 uppercase font-semibold tracking-wider text-[11px] mr-2 shrink-0">Filter Specialty:</span>
+                    <button onclick="filterDoctorSpecialty('all')" class="doc-filter-btn active px-3 py-1.5 rounded-lg bg-blue-600 text-white font-medium transition shrink-0" data-spec="all">All Providers</button>
+                    <button onclick="filterDoctorSpecialty('neurology')" class="doc-filter-btn px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 font-medium transition shrink-0" data-spec="neurology">Pediatric Neurology</button>
+                    <button onclick="filterDoctorSpecialty('psychiatry')" class="doc-filter-btn px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 font-medium transition shrink-0" data-spec="psychiatry">ADHD Psychiatry & Meds</button>
+                    <button onclick="filterDoctorSpecialty('psychology')" class="doc-filter-btn px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 font-medium transition shrink-0" data-spec="psychology">Neuropsychology & IEP</button>
+                    <button onclick="filterDoctorSpecialty('pediatric')" class="doc-filter-btn px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 font-medium transition shrink-0" data-spec="pediatric">Developmental Pediatrics</button>
+                </div>
+            </div>
+
+            <!-- Map & Doctors List Layout -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                <!-- Interactive Leaflet Map & Live Google Maps View -->
+                <div class="lg:col-span-7 glass-card p-5 space-y-4">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <div class="flex items-center space-x-2">
+                            <i data-lucide="map-pin" class="w-4 h-4 text-rose-400"></i>
+                            <span class="text-sm font-bold text-white">Interactive Provider Map</span>
+                            <span id="active-location-badge" class="px-2 py-0.5 rounded-full text-[11px] bg-slate-800 text-emerald-400 border border-emerald-500/30">Auto-Detecting Location...</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <div class="flex items-center space-x-1 bg-slate-900 p-1 rounded-xl border border-slate-800 text-xs">
+                                <button onclick="toggleMapView('leaflet')" id="btn-view-leaflet" class="px-2.5 py-1 rounded-lg font-semibold bg-blue-600 text-white transition">📍 Map View</button>
+                                <button onclick="toggleMapView('gmaps')" id="btn-view-gmaps" class="px-2.5 py-1 rounded-lg font-semibold text-slate-400 hover:text-white transition">🌐 Google Maps Live</button>
+                            </div>
+                            <span id="doc-count-badge" class="text-xs text-slate-400">0 Found</span>
+                        </div>
+                    </div>
+
+                    <!-- Custom Leaflet Map Container -->
+                    <div id="doctors-map" class="shadow-inner border border-slate-700/60 overflow-hidden"></div>
+
+                    <!-- Live Google Maps Embed Container -->
+                    <iframe id="google-maps-iframe" class="hidden w-full h-[480px] rounded-xl border border-slate-700/60" loading="lazy" allowfullscreen></iframe>
+
+                    <div class="flex items-center justify-between text-[11px] text-slate-400 pt-2 border-t border-slate-800">
+                        <div class="flex items-center space-x-3">
+                            <span class="flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-blue-500 mr-1.5"></span> Your Position</span>
+                            <span class="flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500 mr-1.5"></span> Real Local Medical Center</span>
+                            <span class="flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-rose-500 mr-1.5"></span> Academic ADHD Flagship</span>
+                        </div>
+                        <span class="text-slate-500">Live GPS & Google Maps Synced</span>
+                    </div>
+                </div>
+
+                <!-- Doctors Card Feed -->
+                <div class="lg:col-span-5 space-y-4">
+                    <div class="flex justify-between items-center px-1">
+                        <h3 class="text-sm font-bold text-white uppercase tracking-wider">Recommended Providers</h3>
+                        <span class="text-xs text-blue-400 font-medium">Sorted by Proximity</span>
+                    </div>
+
+                    <div id="doctors-cards-container" class="space-y-4 max-h-[600px] overflow-y-auto pr-1">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800 py-6 text-center text-xs text-slate-500">
+        ADHD-200 Neuroimaging Research Suite • Nilearn AAL-116 Atlas • DAE • ComBat • Spatiotemporal ConvLSTM
+    </footer>
+
+    <!-- App Logic Script -->
+    <script>
+        let allPatients = [];
+        let selectedFile = null;
+
+        // Initialize icons
+        lucide.createIcons();
+
+        // Switch Tabs
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('tab-' + tabId).classList.add('active');
+
+            document.getElementById('section-cached').classList.add('hidden');
+            document.getElementById('section-upload').classList.add('hidden');
+            document.getElementById('section-benchmarks').classList.add('hidden');
+            document.getElementById('section-doctors').classList.add('hidden');
+
+            document.getElementById('section-' + tabId).classList.remove('hidden');
+
+            if (tabId === 'benchmarks') {
+                loadBenchmarksData();
+            } else if (tabId === 'doctors') {
+                setTimeout(() => {
+                    initDoctorsMap();
+                }, 100);
+            }
+        }
+
+        // Fetch Initial Patients
+        async function init() {
+            try {
+                const res = await fetch('/api/patients');
+                allPatients = await res.json();
+                
+                // Populate Site Filter
+                const sites = [...new Set(allPatients.map(p => p.site))].sort();
+                const siteSelect = document.getElementById('site-filter');
+                sites.forEach(s => {
+                    const opt = document.createElement('option');
+                    opt.value = s;
+                    opt.textContent = `${s} Hospital`;
+                    siteSelect.appendChild(opt);
+                });
+
+                filterPatients();
+            } catch (err) {
+                console.error("Failed to load patients:", err);
+            }
+        }
+
+        // Filter Patients
+        function filterPatients() {
+            const siteVal = document.getElementById('site-filter').value;
+            const diagVal = document.getElementById('diag-filter').value;
+
+            let filtered = allPatients;
+            if (siteVal !== 'ALL') filtered = filtered.filter(p => p.site === siteVal);
+            if (diagVal === 'ADHD') filtered = filtered.filter(p => p.label === 1);
+            if (diagVal === 'Control') filtered = filtered.filter(p => p.label === 0);
+
+            const select = document.getElementById('patient-select');
+            select.innerHTML = '';
+            filtered.forEach(p => {
+                const opt = document.createElement('option');
+                opt.value = p.subject_id;
+                opt.textContent = `${p.subject_id} (${p.site}, ${p.diagnosis})`;
+                select.appendChild(opt);
+            });
+        }
+
+        function pickRandomPatient() {
+            const select = document.getElementById('patient-select');
+            if (select.options.length > 0) {
+                const randIndex = Math.floor(Math.random() * select.options.length);
+                select.selectedIndex = randIndex;
+                runCachedPrediction();
+            }
+        }
+
+        // Run Cached Prediction
+        async function runCachedPrediction() {
+            const subId = document.getElementById('patient-select').value;
+            if (!subId) return;
+
+            const resContainer = document.getElementById('cached-result-container');
+            resContainer.classList.remove('hidden');
+
+            try {
+                const res = await fetch('/api/predict_cached', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ subject_id: subId })
+                });
+                const data = await res.json();
+                renderResults(data, 'cached');
+            } catch (err) {
+                console.error("Prediction failed:", err);
+            }
+        }
+
+        // Render Results Dashboard Cards & Plots
+        function renderResults(data, mode) {
+            const prefix = mode === 'cached' ? '' : 'upload-';
+            const isADHD = data.prediction === 'ADHD';
+            const isMatch = data.is_match;
+
+            // Verdict Card
+            const vCard = document.getElementById('verdict-card');
+            const vText = document.getElementById('verdict-text');
+            const vSub = document.getElementById('verdict-sub');
+            if (isADHD) {
+                vCard.className = "glass-card p-6 flex flex-col justify-between border-l-4 border-red-500 bg-red-950/20";
+                vText.className = "text-2xl font-extrabold mt-1 text-red-400";
+                vText.textContent = "🚨 ADHD PATTERN DETECTED";
+                vSub.textContent = "Significant functional connectivity disruption detected";
+            } else {
+                vCard.className = "glass-card p-6 flex flex-col justify-between border-l-4 border-emerald-500 bg-emerald-950/20";
+                vText.className = "text-2xl font-extrabold mt-1 text-emerald-400";
+                vText.textContent = "✅ TYPICALLY DEVELOPING (CONTROL)";
+                vSub.textContent = "Normal resting attentional network synchronization";
+            }
+
+            document.getElementById('latency-text').textContent = `${data.latency_ms.toFixed(1)} ms`;
+
+            // Confidence Gauge
+            document.getElementById('conf-val').textContent = `${data.confidence.toFixed(1)}%`;
+            document.getElementById('conf-bar').style.width = `${data.confidence}%`;
+            document.getElementById('conf-bar').className = isADHD ? 
+                "h-full bg-gradient-to-r from-red-500 to-amber-500 rounded-full transition-all duration-500" :
+                "h-full bg-gradient-to-r from-emerald-500 to-blue-500 rounded-full transition-all duration-500";
+            document.getElementById('p-ctrl').textContent = `${(data.prob_control * 100).toFixed(1)}%`;
+            document.getElementById('p-adhd').textContent = `${(data.prob_adhd * 100).toFixed(1)}%`;
+
+            // Ground Truth
+            document.getElementById('gt-text').textContent = data.ground_truth;
+            const agreeIcon = document.getElementById('agreement-icon');
+            const agreeText = document.getElementById('agreement-text');
+            if (isMatch) {
+                agreeIcon.className = "w-10 h-10 rounded-xl flex items-center justify-center bg-emerald-500/10 text-emerald-400 border border-emerald-500/20";
+                agreeText.textContent = "🟢 Model agrees with clinician record";
+            } else {
+                agreeIcon.className = "w-10 h-10 rounded-xl flex items-center justify-center bg-amber-500/10 text-amber-400 border border-amber-500/20";
+                agreeText.textContent = "🟡 Clinical divergence (False Pos / Neg)";
+            }
+
+            document.getElementById('meta-site').textContent = data.metadata.site || 'Uploaded';
+            document.getElementById('meta-age').textContent = data.metadata.age ? `${data.metadata.age} yrs` : 'N/A';
+            document.getElementById('meta-duration').textContent = `${data.metadata.timepoints}s`;
+
+            // Render Heatmap with Plotly
+            renderHeatmap(data.connectivity_matrix, data.aal_labels);
+
+            // Render ROIs Bar Chart
+            renderROIsChart(data.top_rois);
+
+            // Render Edges
+            const edgeList = document.getElementById('edges-list');
+            edgeList.innerHTML = '';
+            data.top_edges.slice(0, 5).forEach((e, idx) => {
+                const d = document.createElement('div');
+                d.className = "flex justify-between items-center p-2 rounded-lg bg-slate-900/60 border border-slate-800";
+                d.innerHTML = `<span class="font-medium text-slate-200">#${idx+1}: ${e.roi1_name} ⟷ ${e.roi2_name}</span><span class="text-blue-400 font-mono font-bold">${e.edge_weight.toFixed(3)}</span>`;
+                edgeList.appendChild(d);
+            });
+
+            // Populate Clinical Decision Support (CDS) & Doctor Guidance
+            if (data.clinical_guidance) {
+                const cg = data.clinical_guidance;
+                const badge = document.getElementById('subtype-badge');
+                badge.textContent = cg.subtype;
+                if (isADHD) {
+                    badge.className = "px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-500/20 text-amber-300 border border-amber-500/30";
+                } else {
+                    badge.className = "px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
+                }
+
+                document.getElementById('cds-circuit').textContent = cg.circuit;
+                document.getElementById('cds-rationale').textContent = cg.rationale;
+
+                const behList = document.getElementById('cds-behavioral');
+                behList.innerHTML = '';
+                (cg.behavioral || []).forEach(item => {
+                    const li = document.createElement('li');
+                    li.className = "flex items-start space-x-2";
+                    li.innerHTML = `<span class="text-amber-400 mt-0.5 shrink-0">•</span><span>${item}</span>`;
+                    behList.appendChild(li);
+                });
+
+                const classList = document.getElementById('cds-classroom');
+                classList.innerHTML = '';
+                (cg.classroom || []).forEach(item => {
+                    const li = document.createElement('li');
+                    li.className = "flex items-start space-x-2";
+                    li.innerHTML = `<span class="text-blue-400 mt-0.5 shrink-0">•</span><span>${item}</span>`;
+                    classList.appendChild(li);
+                });
+
+                const medList = document.getElementById('cds-medical');
+                medList.innerHTML = '';
+                (cg.medical || []).forEach(item => {
+                    const li = document.createElement('li');
+                    li.className = "flex items-start space-x-2";
+                    li.innerHTML = `<span class="text-emerald-400 mt-0.5 shrink-0">•</span><span>${item}</span>`;
+                    medList.appendChild(li);
+                });
+
+                document.getElementById('cds-monitoring').textContent = cg.monitoring;
+            }
+
+            lucide.createIcons();
+        }
+
+        // Plotly Heatmap
+        function renderHeatmap(matrix, labels) {
+            const shortLabels = labels.map((l, i) => `R${i}: ${l.substring(0, 10)}`);
+            const trace = {
+                z: matrix,
+                x: shortLabels,
+                y: shortLabels,
+                type: 'heatmap',
+                colorscale: 'RdBu',
+                reversescale: true,
+                zmin: -0.8,
+                zmax: 0.8
+            };
+            const layout = {
+                paper_bgcolor: 'rgba(0,0,0,0)',
+                plot_bgcolor: 'rgba(0,0,0,0)',
+                margin: { l: 85, r: 25, t: 25, b: 85 },
+                xaxis: { tickfont: { color: '#94A3B8', size: 9 }, tickangle: -45 },
+                yaxis: { tickfont: { color: '#94A3B8', size: 9 } }
+            };
+            Plotly.newPlot('heatmap-plot', [trace], layout, { responsive: true, displayModeBar: false });
+        }
+
+        // Plotly Horizontal Bar Chart
+        function renderROIsChart(topRois) {
+            const rev = [...topRois].reverse();
+            const trace = {
+                x: rev.map(r => r.importance_score),
+                y: rev.map(r => r.roi_name),
+                type: 'bar',
+                orientation: 'h',
+                marker: {
+                    color: rev.map(r => r.importance_score),
+                    colorscale: 'Viridis'
+                }
+            };
+            const layout = {
+                paper_bgcolor: 'rgba(0,0,0,0)',
+                plot_bgcolor: 'rgba(0,0,0,0)',
+                margin: { l: 165, r: 25, t: 15, b: 35 },
+                xaxis: { title: 'Grad-CAM Importance', color: '#94A3B8', gridcolor: '#1E293B' },
+                yaxis: { tickfont: { color: '#CBD5E1', size: 10 } }
+            };
+            Plotly.newPlot('rois-plot', [trace], layout, { responsive: true, displayModeBar: false });
+        }
+
+        // Upload Handlers
+        function handleFileSelected(files) {
+            if (!files || files.length === 0) return;
+            selectedFile = files[0];
+            document.getElementById('upload-filename').textContent = selectedFile.name;
+            document.getElementById('upload-filesize').textContent = (selectedFile.size / (1024 * 1024)).toFixed(1) + ' MB';
+            document.getElementById('selected-file-info').classList.remove('hidden');
+            document.getElementById('upload-btn').disabled = false;
+            lucide.createIcons();
+        }
+
+        function clearUpload() {
+            selectedFile = null;
+            document.getElementById('file-input').value = '';
+            document.getElementById('selected-file-info').classList.add('hidden');
+            document.getElementById('upload-btn').disabled = true;
+        }
+
+        async function submitUploadedScan() {
+            if (!selectedFile) return;
+
+            const btn = document.getElementById('upload-btn');
+            const loading = document.getElementById('upload-loading');
+            btn.disabled = true;
+            loading.classList.remove('hidden');
+
+            const formData = new FormData();
+            formData.append('file', selectedFile);
+
+            try {
+                const res = await fetch('/api/upload_scan', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await res.json();
+                
+                loading.classList.add('hidden');
+                btn.disabled = false;
+
+                if (data.error) {
+                    alert("Error: " + data.error);
+                    return;
+                }
+
+                // Switch to cached tab to view identical dashboard with uploaded data
+                switchTab('cached');
+                document.getElementById('cached-result-container').classList.remove('hidden');
+                renderResults(data, 'cached');
+            } catch (err) {
+                loading.classList.add('hidden');
+                btn.disabled = false;
+                alert("Upload failed: " + err);
+            }
+        }
+
+        // Benchmarks Table Loading
+        async function loadBenchmarksData() {
+            try {
+                const res = await fetch('/api/benchmarks');
+                const data = await res.json();
+                
+                const tbody = document.getElementById('ablation-table-body');
+                tbody.innerHTML = '';
+                
+                data.ablations.forEach(row => {
+                    const tr = document.createElement('tr');
+                    tr.className = "hover:bg-slate-800/40 transition";
+                    tr.innerHTML = `
+                        <td class="py-3 px-4 font-semibold text-white">${row["Experiment Name"]}</td>
+                        <td class="py-3 px-4 font-mono text-xs text-blue-400">${row["Model Architecture"]}</td>
+                        <td class="py-3 px-4">${row["DAE Denoising"] ? '✅' : '❌'}</td>
+                        <td class="py-3 px-4">${row["ComBat Harmonization"] ? '✅' : '❌'}</td>
+                        <td class="py-3 px-4 text-xs font-mono text-slate-300">${row["Connectivity Mode"]}</td>
+                        <td class="py-3 px-4 font-bold text-emerald-400">${row["Mean Accuracy"]}</td>
+                        <td class="py-3 px-4">${row["Mean Sensitivity"]}</td>
+                        <td class="py-3 px-4">${row["Mean Specificity"]}</td>
+                        <td class="py-3 px-4">${row["Mean F1-Score"]}</td>
+                        <td class="py-3 px-4 font-mono text-blue-300">${row["Mean ROC-AUC"]}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+
+                // Render Ablation Plotly Chart
+                const trace = {
+                    x: data.ablations.map(r => r["Experiment Name"]),
+                    y: data.ablations.map(r => parseFloat(r["Mean Accuracy"].replace('%', ''))),
+                    type: 'bar',
+                    marker: { color: '#3B82F6' }
+                };
+                const layout = {
+                    paper_bgcolor: 'rgba(0,0,0,0)',
+                    plot_bgcolor: 'rgba(0,0,0,0)',
+                    margin: { l: 65, r: 25, t: 25, b: 120 },
+                    yaxis: { title: 'Cross-Hospital Accuracy (%)', color: '#94A3B8', range: [40, 80], gridcolor: '#1E293B' },
+                    xaxis: { color: '#94A3B8', tickangle: -25 }
+                };
+                Plotly.newPlot('ablation-chart', [trace], layout, { responsive: true, displayModeBar: false });
+
+            } catch (err) {
+                console.error("Failed to load benchmarks:", err);
+            }
+        }
+
+        // -------------------------------------------------------------
+        // Doctor Finder (Maps & Geolocation) Logic
+        // -------------------------------------------------------------
+        let doctorsMap = null;
+        let doctorMarkers = [];
+        let userMarker = null;
+        let currentDoctorsData = [];
+        let activeDoctorFilter = 'all';
+        let currentDoctorLocation = null;
+        let currentGoogleMapsEmbedUrl = '';
+
+        function toggleMapView(mode) {
+            const mapEl = document.getElementById('doctors-map');
+            const gmapsIframe = document.getElementById('google-maps-iframe');
+            const btnLeaflet = document.getElementById('btn-view-leaflet');
+            const btnGmaps = document.getElementById('btn-view-gmaps');
+
+            if (mode === 'gmaps') {
+                mapEl.classList.add('hidden');
+                gmapsIframe.classList.remove('hidden');
+                btnGmaps.className = 'px-2.5 py-1 rounded-lg font-semibold bg-blue-600 text-white transition';
+                btnLeaflet.className = 'px-2.5 py-1 rounded-lg font-semibold text-slate-400 hover:text-white transition';
+                if (currentGoogleMapsEmbedUrl) {
+                    gmapsIframe.src = currentGoogleMapsEmbedUrl;
+                }
+            } else {
+                gmapsIframe.classList.add('hidden');
+                mapEl.classList.remove('hidden');
+                btnLeaflet.className = 'px-2.5 py-1 rounded-lg font-semibold bg-blue-600 text-white transition';
+                btnGmaps.className = 'px-2.5 py-1 rounded-lg font-semibold text-slate-400 hover:text-white transition';
+                if (doctorsMap) doctorsMap.invalidateSize();
+            }
+        }
+
+        function initDoctorsMap() {
+            if (!doctorsMap) {
+                // Initialize map with a placeholder view, will quickly reposition to user's real location
+                doctorsMap = L.map('doctors-map').setView([11.2448, 75.7721], 12);
+                
+                L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+                    subdomains: 'abcd',
+                    maxZoom: 19
+                }).addTo(doctorsMap);
+                
+                // Automatically prompt for device GPS; fall back to IP auto-detection
+                autoDetectUserLocation();
+            } else {
+                doctorsMap.invalidateSize();
+            }
+        }
+
+        function autoDetectUserLocation() {
+            const badge = document.getElementById('active-location-badge');
+            if (badge) badge.textContent = "Detecting Real GPS Location...";
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (pos) => {
+                        console.log("GPS Location acquired:", pos.coords.latitude, pos.coords.longitude);
+                        fetchDoctors({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+                    },
+                    (err) => {
+                        console.warn("GPS permission not granted or unavailable, falling back to IP location:", err.message);
+                        fetchDoctors({}); // Server auto-detects via IP
+                    },
+                    { timeout: 6000, enableHighAccuracy: true }
+                );
+            } else {
+                fetchDoctors({});
+            }
+        }
+
+        async function fetchDoctors(params = {}) {
+            const container = document.getElementById('doctors-cards-container');
+            container.innerHTML = `
+                <div class="text-center py-12 text-slate-400">
+                    <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-rose-500 border-t-transparent mb-3"></div>
+                    <p class="text-xs font-medium">Scanning live hospitals & specialized clinics near your location...</p>
+                </div>
+            `;
+
+            try {
+                let url = '/api/nearby_doctors?';
+                if (params.lat && params.lng) url += `lat=${params.lat}&lng=${params.lng}&`;
+                if (params.query) url += `query=${encodeURIComponent(params.query)}&`;
+                if (activeDoctorFilter !== 'all') url += `specialty=${activeDoctorFilter}&`;
+
+                const res = await fetch(url);
+                const data = await res.json();
+                currentDoctorsData = data.doctors || [];
+
+                currentDoctorLocation = {
+                    lat: data.center.lat,
+                    lng: data.center.lng,
+                    name: data.center.location_name
+                };
+
+                currentGoogleMapsEmbedUrl = data.google_maps_embed_url || '';
+                const gmapsIframe = document.getElementById('google-maps-iframe');
+                if (gmapsIframe && !gmapsIframe.classList.contains('hidden') && currentGoogleMapsEmbedUrl) {
+                    gmapsIframe.src = currentGoogleMapsEmbedUrl;
+                }
+
+                document.getElementById('active-location-badge').textContent = `🟢 ${currentDoctorLocation.name}`;
+                document.getElementById('doc-count-badge').textContent = `${currentDoctorsData.length} Real Centers Near You`;
+                document.getElementById('btn-open-google-maps').href = data.general_google_maps_url;
+
+                renderDoctorMarkers(data.center, currentDoctorsData);
+                renderDoctorCards(currentDoctorsData);
+            } catch (err) {
+                console.error("Failed to fetch doctors:", err);
+                container.innerHTML = `<div class="p-4 rounded-xl bg-red-950/30 border border-red-800 text-red-300 text-xs">Error loading provider data: ${err.message}</div>`;
+            }
+        }
+
+        function renderDoctorMarkers(center, doctors) {
+            if (!doctorsMap) return;
+
+            doctorMarkers.forEach(m => doctorsMap.removeLayer(m));
+            doctorMarkers = [];
+            if (userMarker) doctorsMap.removeLayer(userMarker);
+
+            doctorsMap.setView([center.lat, center.lng], 12);
+
+            // User Location Marker (Pulse Blue Icon)
+            const userIcon = L.divIcon({
+                className: 'custom-user-marker',
+                html: `<div class="relative flex items-center justify-center">
+                    <span class="animate-ping absolute inline-flex h-6 w-6 rounded-full bg-blue-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-4 w-4 bg-blue-600 border-2 border-white shadow-lg"></span>
+                </div>`,
+                iconSize: [24, 24],
+                iconAnchor: [12, 12]
+            });
+
+            userMarker = L.marker([center.lat, center.lng], { icon: userIcon })
+                .addTo(doctorsMap)
+                .bindPopup(`<strong class="text-blue-400">📍 You Are Here</strong><br><span class="text-xs text-slate-300">${center.location_name}</span>`);
+
+            doctors.forEach((doc, idx) => {
+                const isAcademic = doc.is_academic_center;
+                const pinColor = isAcademic ? '#10B981' : '#F43F5E';
+                
+                const docIcon = L.divIcon({
+                    className: 'custom-doc-marker',
+                    html: `<div style="background-color: ${pinColor};" class="w-8 h-8 rounded-full border-2 border-white shadow-xl flex items-center justify-center text-white font-bold text-xs">
+                        ${isAcademic ? '🏥' : '🩺'}
+                    </div>`,
+                    iconSize: [32, 32],
+                    iconAnchor: [16, 16]
+                });
+
+                const marker = L.marker([doc.lat, doc.lng], { icon: docIcon }).addTo(doctorsMap);
+                
+                const popupContent = `
+                    <div class="p-1 space-y-2 max-w-[250px]">
+                        <div>
+                            <span class="text-[10px] uppercase font-bold tracking-wider text-rose-400 block">${doc.specialty}</span>
+                            <h4 class="font-bold text-white text-sm leading-tight">${doc.name}</h4>
+                            <p class="text-xs text-slate-300">${doc.doctor}</p>
+                        </div>
+                        <div class="text-xs text-slate-400 space-y-0.5">
+                            <div>📍 <strong>${doc.distance_km} km away</strong></div>
+                            <div>⭐ <strong>${doc.rating}</strong> (${doc.reviews} reviews)</div>
+                            <div>📞 ${doc.phone}</div>
+                        </div>
+                        <div class="pt-2 border-t border-slate-700 flex space-x-2">
+                            <a href="${doc.google_maps_url}" target="_blank" class="flex-1 text-center bg-blue-600 hover:bg-blue-500 text-white text-[11px] font-semibold py-1 px-2 rounded-lg transition">Google Maps</a>
+                            <a href="${doc.google_directions_url}" target="_blank" class="flex-1 text-center bg-slate-800 hover:bg-slate-700 text-slate-200 text-[11px] font-semibold py-1 px-2 rounded-lg border border-slate-700 transition">Directions</a>
+                        </div>
+                    </div>
+                `;
+                marker.bindPopup(popupContent);
+                doctorMarkers.push(marker);
+            });
+        }
+
+        function renderDoctorCards(doctors) {
+            const container = document.getElementById('doctors-cards-container');
+            container.innerHTML = '';
+
+            if (doctors.length === 0) {
+                container.innerHTML = `
+                    <div class="glass-card p-6 text-center text-slate-400 text-xs">
+                        No facilities found for the selected specialty in this immediate area. Try selecting "All Providers" or searching a neighboring city.
+                    </div>
+                `;
+                return;
+            }
+
+            doctors.forEach((doc, idx) => {
+                const card = document.createElement('div');
+                card.className = "glass-card p-4 hover:border-slate-600 transition space-y-3 cursor-pointer group";
+                card.onclick = () => {
+                    toggleMapView('leaflet');
+                    if (doctorsMap && doctorMarkers[idx]) {
+                        doctorsMap.setView([doc.lat, doc.lng], 14, { animate: true });
+                        doctorMarkers[idx].openPopup();
+                    }
+                };
+
+                const isAcademic = doc.is_academic_center;
+                const isRealPlace = doc.is_real_place;
+
+                card.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <div class="flex items-center space-x-2 flex-wrap gap-y-1">
+                                <span class="text-xs font-bold text-white group-hover:text-blue-400 transition">${doc.name}</span>
+                                ${isAcademic ? '<span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Flagship Academic</span>' : (isRealPlace ? '<span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-blue-500/20 text-blue-300 border border-blue-500/30">🟢 Live Local Center</span>' : '')}
+                            </div>
+                            <p class="text-xs text-slate-400 mt-0.5">${doc.doctor}</p>
+                        </div>
+                        <span class="px-2 py-1 rounded-lg text-xs font-bold bg-slate-800 text-rose-300 border border-slate-700 shrink-0">
+                            ${doc.distance_km} km
+                        </span>
+                    </div>
+
+                    <div class="p-2.5 rounded-xl bg-slate-900/80 border border-slate-800 text-xs space-y-1">
+                        <div class="flex items-center justify-between text-slate-300">
+                            <span class="text-indigo-300 font-semibold">${doc.specialty}</span>
+                            <span class="text-amber-400 font-bold">⭐ ${doc.rating} <span class="text-slate-500 font-normal">(${doc.reviews})</span></span>
+                        </div>
+                        <p class="text-slate-400 text-[11px] leading-relaxed"><strong>Clinical Focus:</strong> ${doc.circuit_focus}</p>
+                        <p class="text-slate-500 text-[11px] truncate" title="${doc.address}">📍 ${doc.address}</p>
+                    </div>
+
+                    <div class="flex items-center justify-between text-[11px] text-slate-400 pt-1">
+                        <span class="flex items-center"><i data-lucide="video" class="w-3.5 h-3.5 text-emerald-400 mr-1"></i> Consult Available</span>
+                        <span class="truncate max-w-[180px]">${doc.phone}</span>
+                    </div>
+
+                    <div class="pt-2 border-t border-slate-800 flex space-x-2" onclick="event.stopPropagation()">
+                        <a href="${doc.google_maps_url}" target="_blank" class="flex-1 bg-blue-600/90 hover:bg-blue-600 text-white text-xs font-medium py-1.5 px-3 rounded-lg text-center transition flex items-center justify-center space-x-1">
+                            <i data-lucide="map" class="w-3.5 h-3.5"></i>
+                            <span>Google Maps</span>
+                        </a>
+                        <a href="${doc.google_directions_url}" target="_blank" class="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium py-1.5 px-3 rounded-lg border border-slate-700 text-center transition flex items-center justify-center space-x-1">
+                            <i data-lucide="navigation" class="w-3.5 h-3.5 text-blue-400"></i>
+                            <span>Directions</span>
+                        </a>
+                        <a href="tel:${doc.phone.replace(/[^0-9+]/g, '')}" class="p-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg border border-slate-700 transition" title="Call Clinic">
+                            <i data-lucide="phone" class="w-4 h-4 text-emerald-400"></i>
+                        </a>
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+
+            lucide.createIcons();
+        }
+
+        function executeDoctorSearch() {
+            const query = document.getElementById('doctor-query-input').value.trim();
+            if (!query) return;
+            fetchDoctors({ query: query });
+        }
+
+        function getUserGpsLocation() {
+            if (!navigator.geolocation) {
+                alert("Geolocation is not supported by your browser. Please search by city name.");
+                return;
+            }
+
+            const btn = event?.currentTarget;
+            if (btn) btn.innerHTML = '<span class="inline-block animate-spin mr-1">⏳</span> Locating GPS...';
+
+            navigator.geolocation.getCurrentPosition(
+                (pos) => {
+                    if (btn) btn.innerHTML = '<i data-lucide="crosshair" class="w-4 h-4"></i><span>Use My GPS Location</span>';
+                    lucide.createIcons();
+                    fetchDoctors({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+                },
+                (err) => {
+                    if (btn) btn.innerHTML = '<i data-lucide="crosshair" class="w-4 h-4"></i><span>Use My GPS Location</span>';
+                    lucide.createIcons();
+                    alert("Location access denied or unavailable. Falling back to IP-detected location.");
+                    fetchDoctors({});
+                },
+                { timeout: 8000, enableHighAccuracy: true }
+            );
+        }
+
+        function filterDoctorSpecialty(specialty) {
+            activeDoctorFilter = specialty;
+            document.querySelectorAll('.doc-filter-btn').forEach(btn => {
+                if (btn.getAttribute('data-spec') === specialty) {
+                    btn.className = 'doc-filter-btn active px-3 py-1.5 rounded-lg bg-blue-600 text-white font-medium transition shrink-0';
+                } else {
+                    btn.className = 'doc-filter-btn px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 font-medium transition shrink-0';
+                }
+            });
+
+            if (currentDoctorLocation) {
+                fetchDoctors({ lat: currentDoctorLocation.lat, lng: currentDoctorLocation.lng });
+            } else {
+                fetchDoctors({});
+            }
+        }
+
+        function openDoctorFinderForPatient() {
+            switchTab('doctors');
+            const circuitText = document.getElementById('cds-circuit')?.textContent || '';
+            
+            if (circuitText.includes('Motor') || circuitText.includes('Frontostriatal')) {
+                filterDoctorSpecialty('neurology');
+            } else if (circuitText.includes('Default Mode') || circuitText.includes('Timing')) {
+                filterDoctorSpecialty('psychiatry');
+            } else {
+                filterDoctorSpecialty('all');
+            }
+        }
+
+        // Start
+        init();
+    </script>
+</body>
+</html>
